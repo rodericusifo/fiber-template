@@ -1,0 +1,11 @@
+with-expecter: True
+issue-845-fix: True
+all: True
+dir: "lib/mockery/mocks"
+mockname: "{{.InterfaceName}}"
+filename: "{{.MockName}}.go"
+outpkg: mocks
+packages:
+  github.com/rodericusifo/fiber-template:
+    config:
+      recursive: true

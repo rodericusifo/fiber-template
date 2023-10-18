@@ -1,0 +1,105 @@
+services:
+  mysqldb:
+    image: mysql:latest
+    container_name: mysql_fiber_container_${ENV}
+    environment:
+      - MYSQL_DATABASE=${DATABASE_MYSQL_NAME}
+      - MYSQL_USER=${DATABASE_MYSQL_USERNAME}
+      - MYSQL_PASSWORD=${DATABASE_MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=password
+      - TZ=Asia/Jakarta
+    ports:
+      - 3307:3306
+    volumes:
+      - mysql_fiber_data:/var/lib/mysql
+    networks:
+      - fiber_backend
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-ppassword"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # postgresdb:
+  #   image: postgres:latest
+  #   container_name: postgres_fiber_container_${ENV}
+  #   environment:
+  #     - POSTGRES_DB=${DATABASE_POSTGRES_NAME}
+  #     - POSTGRES_USER=${DATABASE_POSTGRES_USERNAME}
+  #     - POSTGRES_PASSWORD=${DATABASE_POSTGRES_PASSWORD}
+  #   ports:
+  #     - 5433:5432
+  #   volumes:
+  #     - postgres_fiber_data:/var/lib/postgresql/data
+  #   networks:
+  #     - fiber_backend
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U ${DATABASE_POSTGRES_USERNAME} -d ${DATABASE_POSTGRES_NAME} -h 127.0.0.1"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+
+  redisdb:
+    image: redis/redis-stack-server:latest
+    container_name: redis_fiber_container_${ENV}
+    environment:
+      - REDIS_ARGS=--user ${DATABASE_CACHE_REDIS_USERNAME} on +@all ~* >${DATABASE_CACHE_REDIS_PASSWORD} --requirepass ${DATABASE_CACHE_REDIS_PASSWORD}
+    ports:
+      - 6380:6379
+    volumes:
+      - redis_fiber_data:/data
+    networks:
+      - fiber_backend
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    container_name: golang_fiber_container_${ENV}
+    tty: true
+    build:
+      dockerfile: Dockerfile
+      context: .
+      target: build-release-stage
+      args:
+        ENV: ${ENV}
+        PORT: ${SERVER_PORT}
+    environment:
+      - ENV=${ENV}
+      - PORT=${SERVER_PORT}
+    expose:
+      - ${SERVER_PORT}
+    command: ["sh", "-c", "/dist/main -env \"$ENV\""]
+    ports:
+      - 8081:${SERVER_PORT}
+    restart: on-failure
+    volumes:
+      - .:/app
+    depends_on:
+      mysqldb:
+        condition: service_healthy
+      # postgresdb:
+      #   condition: service_healthy
+      redisdb:
+        condition: service_healthy
+    networks:
+      - fiber_backend
+
+volumes:
+  mysql_fiber_data:
+    external: true
+    name: mysql_fiber_data_${ENV}
+  # postgres_fiber_data:
+  #   external: true
+  #   name: postgres_fiber_data_${ENV}
+  redis_fiber_data:
+    external: true
+    name: redis_fiber_data_${ENV}
+
+# Networks to be created to facilitate communication between containers
+networks:
+  fiber_backend:
+    external: true
+    name: fiber_backend_${ENV}
