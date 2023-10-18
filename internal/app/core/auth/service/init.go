@@ -1,0 +1,22 @@
+package service
+
+import (
+	"github.com/rodericusifo/fiber-template/internal/app/core/auth/service/dto/input"
+	"github.com/rodericusifo/fiber-template/internal/app/core/auth/service/dto/output"
+	"github.com/rodericusifo/fiber-template/internal/app/core/user/resource"
+)
+
+type IAuthService interface {
+	RegisterAuth(payload *input.RegisterAuthDTO) error
+	LoginAuth(payload *input.LoginAuthDTO) (*output.LoginAuthDTO, error)
+}
+
+type AuthService struct {
+	UserResource resource.IUserResource
+}
+
+func InitAuthService(userResource resource.IUserResource) IAuthService {
+	return &AuthService{
+		UserResource: userResource,
+	}
+}
