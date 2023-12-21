@@ -28,6 +28,7 @@ func BuildQuerySQL(tableName string, db *gorm.DB, query *pkg_types.QuerySQL, dia
 					queryString, bindValues := pkg_util_generator.GenerateWhereQuerySQLStringAndBindValues(join.Relation, join.Searches, dialect)
 					qj = qj.Where(queryString, bindValues...)
 				}
+				qj.Commit()
 				q = q.Joins(join.Relation, qj)
 			} else {
 				q = q.Joins(join.Relation)
@@ -50,6 +51,7 @@ func BuildQuerySQL(tableName string, db *gorm.DB, query *pkg_types.QuerySQL, dia
 					queryString, bindValues := pkg_util_generator.GenerateWhereQuerySQLStringAndBindValues(innerJoin.Relation, innerJoin.Searches, dialect)
 					qj = qj.Where(queryString, bindValues...)
 				}
+				qj.Commit()
 				q = q.InnerJoins(innerJoin.Relation, qj)
 			} else {
 				q = q.InnerJoins(innerJoin.Relation)
