@@ -9,5 +9,5 @@ type DefaultSelectsJoin []pkg_types.SelectJoinQuerySQLOperation
 
 var (
 	DEFAULT_SELECTS_COLUMNS      = DefaultSelects([]pkg_types.SelectQuerySQLOperation{})
-	DEFAULT_SELECTS_JOIN_COLUMNS      = DefaultSelectsJoin([]pkg_types.SelectJoinQuerySQLOperation{})
+	DEFAULT_SELECTS_JOIN_COLUMNS = DefaultSelectsJoin([]pkg_types.SelectJoinQuerySQLOperation{})
 )

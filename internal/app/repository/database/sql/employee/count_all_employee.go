@@ -4,7 +4,7 @@ import (
 	"github.com/rodericusifo/fiber-template/internal/app/model/database/sql"
 
 	pkg_types "github.com/rodericusifo/fiber-template/pkg/types"
-	"github.com/rodericusifo/fiber-template/pkg/util/builder"
+	pkg_util_builder "github.com/rodericusifo/fiber-template/pkg/util/builder"
 )
 
 func (r *EmployeeDatabaseSQLRepository) CountAllEmployee(query *pkg_types.QuerySQL) (int, error) {
@@ -21,9 +21,9 @@ func (r *EmployeeDatabaseSQLRepository) CountAllEmployee(query *pkg_types.QueryS
 
 	if query != nil {
 		query.Selects = append(query.Selects, defaultQuery.Selects...)
-		q = builder.BuildQuerySQL(r.model.TableName(), q, query, r.dialect)
+		q = pkg_util_builder.BuildQuerySQL(r.model.TableName(), q, query, r.dialect)
 	} else {
-		q = builder.BuildQuerySQL(r.model.TableName(), q, defaultQuery, r.dialect)
+		q = pkg_util_builder.BuildQuerySQL(r.model.TableName(), q, defaultQuery, r.dialect)
 	}
 
 	q = q.Table(r.model.TableName()).Find(&employees)

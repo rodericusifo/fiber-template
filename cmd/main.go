@@ -11,6 +11,7 @@ import (
 
 	"github.com/rodericusifo/fiber-template/internal/app/core"
 	"github.com/rodericusifo/fiber-template/internal/pkg/config"
+	"github.com/rodericusifo/fiber-template/internal/pkg/constant"
 	"github.com/rodericusifo/fiber-template/internal/pkg/util/getter"
 	"github.com/rodericusifo/fiber-template/internal/pkg/util/handler"
 	"github.com/rodericusifo/fiber-template/internal/pkg/util/runner"
@@ -48,7 +49,14 @@ func main() {
 
 	core.InitRoutes(app)
 
-	err := app.Listen(fmt.Sprintf(":%s", getter.GetEnvServerPort()))
+	err := app.Listen(fmt.Sprintf(":%d", func() int {
+		serverPort := getter.GetEnvConfig().ServerPort
+		if serverPort != 0 {
+			return serverPort
+		} else {
+			return constant.DEFAULT_ENV_SERVER_PORT.(int)
+		}
+	}()))
 	if err != nil {
 		log.WithFields(log.Fields{
 			"message": "application failed to run",

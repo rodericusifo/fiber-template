@@ -9,7 +9,7 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	pkg_types "github.com/rodericusifo/fiber-template/pkg/types"
-	"github.com/rodericusifo/fiber-template/pkg/util/builder"
+	pkg_util_builder "github.com/rodericusifo/fiber-template/pkg/util/builder"
 )
 
 func (r *UserDatabaseSeederSQLRepository) Clear(db *gorm.DB) error {
@@ -28,7 +28,7 @@ func (r *UserDatabaseSeederSQLRepository) Clear(db *gorm.DB) error {
 		},
 	}
 
-	q = builder.BuildQuerySQL(r.model.TableName(), q, query, r.dialect)
+	q = pkg_util_builder.BuildQuerySQL(r.model.TableName(), q, query, r.dialect)
 
 	if err := q.Table(r.model.TableName()).Find(&users).Error; err != nil {
 		return err

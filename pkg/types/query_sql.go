@@ -7,7 +7,7 @@ type SelectQuerySQLOperation struct {
 }
 
 type SelectJoinQuerySQLOperation struct {
-	Field    string
+	Field string
 }
 
 type SearchQuerySQLOperation struct {

@@ -12,38 +12,38 @@ func GenerateSelectQuerySQLSlice(tableAlias string, selects []pkg_types.SelectQu
 	querySlice := make([]string, 0)
 	tableAlias = strings.Replace(tableAlias, ".", "__", -1)
 
-		switch dialect {
-		case pkg_constant.MYSQL:
-			for _, s := range selects {
-				fieldSelectStr := fmt.Sprintf("`%s`.`%s`", tableAlias, s.Field)
-				if s.Function != "" {
-					function := s.Function
-					fieldStr := fmt.Sprintf("`%s`.`%s`", tableAlias, s.Field)
-					fieldSelectStr = strings.Replace(function, "$", fieldStr, -1)
-				}
-
-				if s.Alias != "" {
-					querySlice = append(querySlice, fmt.Sprintf("%s AS `%s`", fieldSelectStr, s.Alias))
-				} else {
-					querySlice = append(querySlice, fieldSelectStr)
-				}
+	switch dialect {
+	case pkg_constant.MYSQL:
+		for _, s := range selects {
+			fieldSelectStr := fmt.Sprintf("`%s`.`%s`", tableAlias, s.Field)
+			if s.Function != "" {
+				function := s.Function
+				fieldStr := fmt.Sprintf("`%s`.`%s`", tableAlias, s.Field)
+				fieldSelectStr = strings.Replace(function, "$", fieldStr, -1)
 			}
-		case pkg_constant.POSTGRES:
-			for _, s := range selects {
-				fieldSelectStr := fmt.Sprintf(`"%s"."%s"`, tableAlias, s.Field)
-				if s.Function != "" {
-					function := s.Function
-					fieldStr := fmt.Sprintf(`"%s"."%s"`, tableAlias, s.Field)
-					fieldSelectStr = strings.Replace(function, "$", fieldStr, -1)
-				}
-	
-				if s.Alias != "" {
-					querySlice = append(querySlice, fmt.Sprintf(`%s AS "%s"`, fieldSelectStr, s.Alias))
-				} else {
-					querySlice = append(querySlice, fieldSelectStr)
-				}
+
+			if s.Alias != "" {
+				querySlice = append(querySlice, fmt.Sprintf("%s AS `%s`", fieldSelectStr, s.Alias))
+			} else {
+				querySlice = append(querySlice, fieldSelectStr)
 			}
 		}
+	case pkg_constant.POSTGRES:
+		for _, s := range selects {
+			fieldSelectStr := fmt.Sprintf(`"%s"."%s"`, tableAlias, s.Field)
+			if s.Function != "" {
+				function := s.Function
+				fieldStr := fmt.Sprintf(`"%s"."%s"`, tableAlias, s.Field)
+				fieldSelectStr = strings.Replace(function, "$", fieldStr, -1)
+			}
+
+			if s.Alias != "" {
+				querySlice = append(querySlice, fmt.Sprintf(`%s AS "%s"`, fieldSelectStr, s.Alias))
+			} else {
+				querySlice = append(querySlice, fieldSelectStr)
+			}
+		}
+	}
 
 	return querySlice
 }
