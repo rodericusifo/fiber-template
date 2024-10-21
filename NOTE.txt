@@ -1,0 +1,16 @@
+- Repo + Resource Method (ATTENTION COUNT) => SAVE, FIRST, FIND, COUNT
+- Add Context
+- Service + Controller Method => POST, GET (obj), GET (obj)(s/es), UPDATE, DELETE,
+- Route Path => remove '/create', '/delete', '/update', '/list', '/detail'
+- Versioning
+
+DO UNIT TEST CHECK
+TEST APP VIA POSTMAN
+
+- Replace gorm with ent.go
+- Adjust unit test with ent.go
+
+DO UNIT TEST CHECK
+TEST APP VIA POSTMAN
+
+- Implement RBAC
