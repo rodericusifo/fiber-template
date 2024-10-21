@@ -1,0 +1,4 @@
+- Repo + Resource Method (ATTENTION COUNT) => SAVE, FIRST, FIND, COUNT
+- Service + Controller Method => POST, GET (obj), GET (obj)(s/es), UPDATE, DELETE,
+- Route Path => remove '/create', '/delete', '/update', '/list', '/detail'
+- Versioning
