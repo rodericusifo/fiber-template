@@ -18,14 +18,17 @@ RUN apk add build-base make
 # Setup working directory
 WORKDIR /app
 
-# Copy the source from the current directory to the working Directory inside the container
-COPY . .
+# Copy Go dependency files first
+COPY go.mod go.sum ./
 
 # Download and install all the dependencies
 RUN go mod download
 RUN go mod tidy
 RUN go mod verify
 RUN go install github.com/google/wire/cmd/wire@latest
+
+# Copy the source from the current directory to the working Directory inside the container
+COPY . .
 
 # Build Application
 RUN make build
