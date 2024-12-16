@@ -50,9 +50,9 @@ func ConfigureEnv() {
 
 	switch constant.Environment(*environment) {
 	case constant.DEV:
-		viper.SetConfigFile("./environment/dev.application.env")
+		viper.SetConfigFile("./env/dev.application.env")
 	case constant.DOCKER:
-		viper.SetConfigFile("./environment/docker.application.env")
+		viper.SetConfigFile("./env/docker.application.env")
 	default:
 		log.WithFields(log.Fields{
 			"message": "set env fail",

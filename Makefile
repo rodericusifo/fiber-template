@@ -41,7 +41,7 @@ start-dev: gen-wire
 
 docker-start:
 	@echo "$(call log_action,Start Program (Docker))"
-	docker compose --env-file environment/docker.application.env up --build -d
+	docker compose --env-file env/docker.application.env up --build -d
 docker-stop:
 	@echo "$(call log_action,Stop Program (Docker))"
-	docker compose --env-file environment/docker.application.env down
+	docker compose --env-file env/docker.application.env down
