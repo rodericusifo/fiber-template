@@ -9,9 +9,15 @@ NOCOLOR=\033[0m
 # STYLE VARIABLE
 BLUE_TRIPLE_EQUALS=$(LIGHT_BLUE)===$(NOCOLOR)
 
-# STYLE FUNCTION
+# FUNCTION
 define log_action
 $(BLUE_TRIPLE_EQUALS) $(ORANGE)${1}$(NOCOLOR) $(BLUE_TRIPLE_EQUALS)
+endef
+define check_env
+	@if [ -z "$(ENV)" ]; then \
+		echo "ERROR: ENV is required. Usage: make $(1) ENV=dev"; \
+		exit 1; \
+	fi
 endef
 
 # ENV VARIABLE
@@ -35,10 +41,7 @@ test-cover: gen-mock
 	go test `go list ./... | grep -v mocks` -cover -coverprofile=coverage.out -covermode=count
 
 start:
-	@if [ -z "$(ENV)" ]; then \
-		echo "ERROR: ENV is required. Usage: make start ENV=dev"; \
-		exit 1; \
-	fi
+	$(call check_env,start)
 	@echo -e "$(call log_action,Start Program ($(ENV)))"
 	docker volume ls | grep mysql_fiber_data_${ENV} || docker volume create --name mysql_fiber_data_$(ENV)
 	# docker volume ls | grep postgres_fiber_data_${ENV} || docker volume create --name postgres_fiber_data_$(ENV)
@@ -47,9 +50,6 @@ start:
 	export ENV=${ENV} && docker compose --env-file env/$(ENV).application.env up --build -d
 
 stop:
-	@if [ -z "$(ENV)" ]; then \
-		echo "ERROR: ENV is required. Usage: make stop ENV=dev"; \
-		exit 1; \
-	fi
+	$(call check_env,stop)
 	@echo -e "$(call log_action,Stop Program ($(ENV)))"
 	docker compose --env-file env/$(ENV).application.env down
