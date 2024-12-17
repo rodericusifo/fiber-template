@@ -80,7 +80,7 @@ make stop ENV=(env)
 
 - Postman
 
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/10344918-27d85a45-7c41-4b84-9a31-9af5ab1e7a87?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D10344918-27d85a45-7c41-4b84-9a31-9af5ab1e7a87%26entityType%3Dcollection%26workspaceId%3D667868fa-663b-45d5-a9ec-252ff52cb9c8#?env%5B%5BDOCKER%5D%20Go%20Fiber%20App%20Template%20Env%5D=W3sia2V5IjoiYmFzZV91cmwiLCJ2YWx1ZSI6ImxvY2FsaG9zdDo4MDgxIiwiZW5hYmxlZCI6dHJ1ZSwidHlwZSI6ImRlZmF1bHQiLCJzZXNzaW9uVmFsdWUiOiJsb2NhbGhvc3Q6ODA4MSIsInNlc3Npb25JbmRleCI6MH1d)
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://www.postman.com/rodericusifo/workspace/my-public-workspace/collection/10344918-27d85a45-7c41-4b84-9a31-9af5ab1e7a87?action=share&creator=10344918)
 
 ## TEST COVERAGE
 
