@@ -12,8 +12,6 @@ func RunDatabaseSeederSQL(dialect pkg_constant.DialectDatabaseSQL) {
 	switch dialect {
 	case pkg_constant.POSTGRES:
 	case pkg_constant.MYSQL:
-		if ok := config.Env.DatabaseMysqlAutoSeed; ok {
-			user.ExecuteMysqlUserDatabaseSeederRepository(config.Env.DatabaseSeederMysqlUserIsRebuildData, getter.GetMysqlDatabaseSQLConnection())
-		}
+		user.ExecuteMysqlUserDatabaseSeederRepository(config.Env.DatabaseSeederMysqlUserIsRebuildData, getter.GetMysqlDatabaseSQLConnection())
 	}
 }

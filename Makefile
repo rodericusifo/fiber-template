@@ -8,40 +8,48 @@ NOCOLOR=\033[0m
 
 # STYLE VARIABLE
 BLUE_TRIPLE_EQUALS=$(LIGHT_BLUE)===$(NOCOLOR)
-NOCOLOR_TRIPLE_EQUALS====
 
 # STYLE FUNCTION
 define log_action
 $(BLUE_TRIPLE_EQUALS) $(ORANGE)${1}$(NOCOLOR) $(BLUE_TRIPLE_EQUALS)
 endef
-define log_action_no_color
-$(NOCOLOR_TRIPLE_EQUALS) ${1} $(NOCOLOR_TRIPLE_EQUALS)
-endef
+
+# ENV VARIABLE
+ENV ?=
 
 gen-wire:
-	@echo "$(call log_action_no_color,Generate Wire)"
+	@echo -e "$(call log_action,Generate Wire)"
 	wire lib/wire/core/service/auth/wire.go
 	wire lib/wire/core/service/employee/wire.go
 	wire lib/wire/core/resource/user/wire.go
 gen-mock:
-	@echo "$(call log_action_no_color,Generate Mock)"
+	@echo -e "$(call log_action,Generate Mock)"
 	mockery --all --output=lib/mockery/mocks 
 
 build: gen-wire
-	@echo "$(call log_action_no_color,Build Program)"
+	@echo -e "$(call log_action,Build Program)"
 	go build -o /dist/main cmd/main.go
 
 test-cover: gen-mock
-	@echo "$(call log_action,Test Coverage)"
+	@echo -e "$(call log_action,Test Coverage)"
 	go test `go list ./... | grep -v mocks` -cover -coverprofile=coverage.out -covermode=count
 
-start-dev: gen-wire
-	@echo "$(call log_action,Start Program (Development))"
-	go run cmd/main.go -env dev
+start:
+	@if [ -z "$(ENV)" ]; then \
+		echo "ERROR: ENV is required. Usage: make start ENV=dev"; \
+		exit 1; \
+	fi
+	@echo -e "$(call log_action,Start Program ($(ENV)))"
+	docker volume ls | grep mysql_fiber_data_${ENV} || docker volume create --name mysql_fiber_data_$(ENV)
+	# docker volume ls | grep postgres_fiber_data_${ENV} || docker volume create --name postgres_fiber_data_$(ENV)
+	docker volume ls | grep redis_fiber_data_${ENV} || docker volume create --name redis_fiber_data_$(ENV)
+	docker network ls | grep fiber_backend_${ENV} || docker network create fiber_backend_${ENV}
+	export ENV=${ENV} && docker compose --env-file env/$(ENV).application.env up --build -d
 
-docker-start:
-	@echo "$(call log_action,Start Program (Docker))"
-	docker compose --env-file env/docker.application.env up --build -d
-docker-stop:
-	@echo "$(call log_action,Stop Program (Docker))"
-	docker compose --env-file env/docker.application.env down
+stop:
+	@if [ -z "$(ENV)" ]; then \
+		echo "ERROR: ENV is required. Usage: make stop ENV=dev"; \
+		exit 1; \
+	fi
+	@echo -e "$(call log_action,Stop Program ($(ENV)))"
+	docker compose --env-file env/$(ENV).application.env down

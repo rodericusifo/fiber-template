@@ -36,16 +36,29 @@ RUN make build
 ###############################
 # STEP 2: build a small image #
 ###############################
-FROM gcr.io/distroless/base-debian11 AS build-release-stage
+FROM alpine:latest AS build-release-stage
+
+# Set build arg
+ARG ENV
+
+# Validate build arg
+RUN if [ -z "$ENV" ]; then echo "ERROR: ENV must be provided. Use --build-arg ENV=dev"; exit 1; fi
+
+# Set build env
+ENV ENV=${ENV}
 
 # Setup working directory
 WORKDIR /app
 
-# Copy the static executable
+# Copy the binary
 COPY --from=build-stage /dist/main /dist/main
 
-# Use user nonroot
-USER nonroot:nonroot
+# Copy environment files
+COPY env /app/env
 
-# Run the static executable
-CMD [ "/dist/main", "-env", "docker" ]
+# Add a non-root user
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+USER appuser
+
+# Use shell form for CMD
+CMD ["sh", "-c", "/dist/main -env \"$ENV\""]

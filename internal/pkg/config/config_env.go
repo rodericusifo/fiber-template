@@ -30,8 +30,6 @@ type EnvConfig *struct {
 	DatabaseMysqlMaxIdleConnection    int           `mapstructure:"DATABASE_MYSQL_MAX_IDLE_CONNECTION"`
 	DatabaseMysqlMaxOpenConnection    int           `mapstructure:"DATABASE_MYSQL_MAX_OPEN_CONNECTION"`
 	DatabaseMysqlDebugMode            bool          `mapstructure:"DATABASE_MYSQL_DEBUG_MODE"`
-	DatabaseMysqlAutoMigrate          bool          `mapstructure:"DATABASE_MYSQL_AUTO_MIGRATE"`
-	DatabaseMysqlAutoSeed             bool          `mapstructure:"DATABASE_MYSQL_AUTO_SEED"`
 	DatabasePostgresHost              string        `mapstructure:"DATABASE_POSTGRES_HOST"`
 	DatabasePostgresPort              string        `mapstructure:"DATABASE_POSTGRES_PORT"`
 	DatabasePostgresName              string        `mapstructure:"DATABASE_POSTGRES_NAME"`
@@ -42,8 +40,6 @@ type EnvConfig *struct {
 	DatabasePostgresMaxIdleConnection int           `mapstructure:"DATABASE_POSTGRES_MAX_IDLE_CONNECTION"`
 	DatabasePostgresMaxOpenConnection int           `mapstructure:"DATABASE_POSTGRES_MAX_OPEN_CONNECTION"`
 	DatabasePostgresDebugMode         bool          `mapstructure:"DATABASE_POSTGRES_DEBUG_MODE"`
-	DatabasePostgresAutoMigrate       bool          `mapstructure:"DATABASE_POSTGRES_AUTO_MIGRATE"`
-	DatabasePostgresAutoSeed          bool          `mapstructure:"DATABASE_POSTGRES_AUTO_SEED"`
 
 	// DATABASE SEEDER SQL
 	DatabaseSeederMysqlUserIsRebuildData    IsRebuildDataDBSeederMysqlUser    `mapstructure:"DATABASE_SEEDER_MYSQL_USER_IS_REBUILD_DATA"`
@@ -52,6 +48,7 @@ type EnvConfig *struct {
 	// DATABASE CACHE
 	DatabaseCacheRedisAddress  string `mapstructure:"DATABASE_CACHE_REDIS_ADDRESS"`
 	DatabaseCacheRedisPassword string `mapstructure:"DATABASE_CACHE_REDIS_PASSWORD"`
+	DatabaseCacheRedisUsername string `mapstructure:"DATABASE_CACHE_REDIS_USERNAME"`
 	DatabaseCacheRedisDatabase int    `mapstructure:"DATABASE_CACHE_REDIS_DATABASE"`
 
 	// PASSWORD HASHING

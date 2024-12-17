@@ -34,6 +34,8 @@ func init() {
 func main() {
 	app := fiber.New(fiber.Config{
 		ErrorHandler: handler.HandleHTTPError,
+		ServerHeader: "Fiber",
+		AppName:      fmt.Sprintf("%s v%s", getter.GetEnvConfig().AppsName, getter.GetEnvConfig().AppsVersion),
 	})
 
 	app.Use(

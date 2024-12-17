@@ -27,6 +27,4 @@ type DBSQLConfig struct {
 	MaxIdleConnection int
 	MaxOpenConnection int
 	DebugMode         bool
-	AutoMigrate       bool
-	AutoSeed          bool
 }

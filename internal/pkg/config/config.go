@@ -2,7 +2,6 @@ package config
 
 import (
 	"context"
-	"errors"
 	"flag"
 	"fmt"
 
@@ -14,7 +13,6 @@ import (
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
 
-	"github.com/rodericusifo/fiber-template/internal/pkg/constant"
 	"github.com/rodericusifo/fiber-template/internal/pkg/migration"
 	"github.com/rodericusifo/fiber-template/internal/pkg/types"
 	"github.com/rodericusifo/fiber-template/internal/pkg/util/handler"
@@ -48,17 +46,8 @@ func ConfigureEnv() {
 
 	flag.Parse()
 
-	switch constant.Environment(*environment) {
-	case constant.DEV:
-		viper.SetConfigFile("./env/dev.application.env")
-	case constant.DOCKER:
-		viper.SetConfigFile("./env/docker.application.env")
-	default:
-		log.WithFields(log.Fields{
-			"message": "set env fail",
-			"detail":  errors.New("input environment type [ dev | docker ]"),
-		}).Panic("[CONFIGURE ENV]")
-	}
+	path := fmt.Sprintf("./env/%s.application.env", *environment)
+	viper.SetConfigFile(path)
 
 	if err := viper.ReadInConfig(); err != nil {
 		log.WithFields(log.Fields{
@@ -100,8 +89,6 @@ func ConfigureDatabaseSQL(dialect pkg_constant.DialectDatabaseSQL) {
 			MaxIdleConnection: Env.DatabaseMysqlMaxIdleConnection,
 			MaxOpenConnection: Env.DatabaseMysqlMaxOpenConnection,
 			DebugMode:         Env.DatabaseMysqlDebugMode,
-			AutoMigrate:       Env.DatabaseMysqlAutoMigrate,
-			AutoSeed:          Env.DatabaseMysqlAutoSeed,
 		}
 	case pkg_constant.POSTGRES:
 		dbSQLConfig = DBSQLConfig{
@@ -115,8 +102,6 @@ func ConfigureDatabaseSQL(dialect pkg_constant.DialectDatabaseSQL) {
 			MaxIdleConnection: Env.DatabasePostgresMaxIdleConnection,
 			MaxOpenConnection: Env.DatabasePostgresMaxOpenConnection,
 			DebugMode:         Env.DatabasePostgresDebugMode,
-			AutoMigrate:       Env.DatabasePostgresAutoMigrate,
-			AutoSeed:          Env.DatabasePostgresAutoSeed,
 		}
 	}
 
@@ -151,9 +136,7 @@ func ConfigureDatabaseSQL(dialect pkg_constant.DialectDatabaseSQL) {
 		}).Infoln("[CONFIGURE DATABASE SQL]")
 
 		// Auto Migration Models
-		if ok := dbSQLConfig.AutoMigrate; ok {
-			db.AutoMigrate(migration.AutoMigrateModelList...)
-		}
+		db.AutoMigrate(migration.AutoMigrateModelList...)
 
 		sqlDb, err := db.DB()
 		if err != nil {
@@ -190,9 +173,7 @@ func ConfigureDatabaseSQL(dialect pkg_constant.DialectDatabaseSQL) {
 		}).Infoln("[CONFIGURE DATABASE SQL]")
 
 		// Auto Migration Models
-		if ok := dbSQLConfig.AutoMigrate; ok {
-			db.AutoMigrate(migration.AutoMigrateModelList...)
-		}
+		db.AutoMigrate(migration.AutoMigrateModelList...)
 
 		sqlDb, err := db.DB()
 		if err != nil {
@@ -218,6 +199,7 @@ func ConfigureDatabaseCache(dialect pkg_constant.DialectDatabaseCache) {
 		client := redis.NewClient(&redis.Options{
 			Addr:     Env.DatabaseCacheRedisAddress,
 			Password: Env.DatabaseCacheRedisPassword,
+			Username: Env.DatabaseCacheRedisUsername,
 			DB:       Env.DatabaseCacheRedisDatabase,
 		})
 		ctx := context.Background()
