@@ -13,15 +13,15 @@ import (
 	lib_wire_core_service_employee "github.com/rodericusifo/fiber-template/lib/wire/core/service/employee"
 )
 
-func InitRoutes(app *fiber.App) {
+func InitRoutes(router fiber.Router) {
 	{
-		auth := app.Group("/auth")
+		auth := router.Group("/auth")
 		authService := lib_wire_core_service_auth.AuthService()
 		authController := internal_app_core_auth_controller.InitAuthController(authService)
 		authController.Mount(auth)
 	}
 	{
-		employee := app.Group("/employees")
+		employee := router.Group("/employees")
 		employee.Use(jwtware.New(*getter.GetJWTAuthConfig()))
 		employeeService := lib_wire_core_service_employee.EmployeeService()
 		employeeController := internal_app_core_employee_controller.InitEmployeeController(employeeService)

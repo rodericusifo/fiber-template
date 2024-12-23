@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 
 	"github.com/gofiber/fiber/v2"
@@ -52,7 +53,8 @@ func main() {
 		}),
 	)
 
-	core.InitRoutes(app)
+	apiVersion := "/v" + strings.Split(getter.GetEnvConfig().AppsVersion, ".")[0]
+	core.InitRoutes(app.Group(apiVersion))
 
 	go func() {
 		err := app.Listen(fmt.Sprintf(":%d", func() int {
