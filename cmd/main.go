@@ -13,7 +13,6 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/gofiber/fiber/v2/middleware/requestid"
 
-	"github.com/rodericusifo/fiber-template/internal/app/core"
 	"github.com/rodericusifo/fiber-template/internal/pkg/config"
 	"github.com/rodericusifo/fiber-template/internal/pkg/constant"
 	"github.com/rodericusifo/fiber-template/internal/pkg/util/getter"
@@ -22,6 +21,8 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
+	internal_app_core_auth_controller_api "github.com/rodericusifo/fiber-template/internal/app/core/auth/controller/api"
+	internal_app_core_employee_controller_api "github.com/rodericusifo/fiber-template/internal/app/core/employee/controller/api"
 	pkg_constant "github.com/rodericusifo/fiber-template/pkg/constant"
 )
 
@@ -54,7 +55,8 @@ func main() {
 	)
 
 	apiVersion := "/v" + strings.Split(getter.GetEnvConfig().AppsVersion, ".")[0]
-	core.InitRoutes(app.Group(apiVersion))
+	internal_app_core_auth_controller_api.InitAPI(app.Group(apiVersion))
+	internal_app_core_employee_controller_api.InitAPI(app.Group(apiVersion))
 
 	go func() {
 		err := app.Listen(fmt.Sprintf(":%d", func() int {

@@ -1,4 +1,4 @@
-package controller
+package handler
 
 import (
 	"time"
@@ -20,7 +20,7 @@ var (
 	mockApp             *fiber.App
 	mockEmployeeService *lib_mockery_mocks.IEmployeeService
 	mockUserResource    *lib_mockery_mocks.IUserResource
-	employeeController  *EmployeeController
+	employeeHandler     *EmployeeHandler
 )
 
 var (
@@ -29,7 +29,7 @@ var (
 	mockAge, mockAgeMinus, mockPage, mockPageMinus                                                                                      int
 )
 
-func SetupTestEmployeeController() {
+func SetupTestEmployeeHandler() {
 	mockApp = fiber.New(fiber.Config{
 		ErrorHandler: handler.HandleHTTPError,
 	})
@@ -49,8 +49,8 @@ func SetupTestEmployeeController() {
 			Key: []byte("zpuCswZDSc"),
 		},
 	}))
-	employeeController = InitEmployeeController(mockEmployeeService)
-	employeeController.Mount(employee)
+	employeeHandler = InitEmployeeHandler(mockEmployeeService)
+	employeeHandler.Mount(employee)
 
 	mockPage = 1
 	mockPageMinus = -1

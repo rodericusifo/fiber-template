@@ -1,4 +1,4 @@
-package controller
+package handler
 
 import (
 	"encoding/json"
@@ -11,8 +11,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/rodericusifo/fiber-template/internal/app/core/auth/controller/request"
-	"github.com/rodericusifo/fiber-template/internal/app/core/auth/controller/response"
+	"github.com/rodericusifo/fiber-template/internal/app/core/auth/controller/api/request"
+	"github.com/rodericusifo/fiber-template/internal/app/core/auth/controller/api/response"
 	"github.com/rodericusifo/fiber-template/internal/app/core/auth/service/dto/input"
 	"github.com/rodericusifo/fiber-template/internal/app/core/auth/service/dto/output"
 
@@ -20,10 +20,10 @@ import (
 )
 
 func init() {
-	SetupTestAuthController()
+	SetupTestAuthHandler()
 }
 
-func TestAuthController_LoginAuth(t *testing.T) {
+func TestAuthHandler_LoginAuth(t *testing.T) {
 	type (
 		args struct {
 			requestBody request.LoginAuthRequestBody

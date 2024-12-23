@@ -1,4 +1,4 @@
-package controller
+package handler
 
 import (
 	"encoding/json"
@@ -12,7 +12,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/rodericusifo/fiber-template/internal/app/core/employee/controller/request"
+	"github.com/rodericusifo/fiber-template/internal/app/core/employee/controller/api/request"
 	"github.com/rodericusifo/fiber-template/internal/app/core/employee/service/dto/input"
 	"github.com/rodericusifo/fiber-template/internal/app/model/database/sql"
 
@@ -21,14 +21,13 @@ import (
 )
 
 func init() {
-	SetupTestEmployeeController()
+	SetupTestEmployeeHandler()
 }
 
-func TestEmployeeController_UpdateEmployee(t *testing.T) {
+func TestEmployeeHandler_CreateEmployee(t *testing.T) {
 	type (
 		args struct {
-			requestParams request.UpdateEmployeeRequestParams
-			requestBody   request.UpdateEmployeeRequestBody
+			requestBody request.CreateEmployeeRequestBody
 		}
 		result struct {
 			responseStatusCode int
@@ -45,14 +44,13 @@ func TestEmployeeController_UpdateEmployee(t *testing.T) {
 		isError bool
 	}{
 		{
-			desc: "[ERROR]_because_validation_error_body",
+			desc: "[ERROR]_because_validation_error",
 			input: args{
-				requestParams: request.UpdateEmployeeRequestParams{
-					XID: mockUUID,
-				},
-				requestBody: request.UpdateEmployeeRequestBody{
+				requestBody: request.CreateEmployeeRequestBody{
+					Name:     "Ifo",
+					Email:    "",
 					Address:  &mockAddress,
-					Age:      &mockAgeMinus,
+					Age:      &mockAge,
 					Birthday: &mockBirthdayString,
 				},
 			},
@@ -88,10 +86,9 @@ func TestEmployeeController_UpdateEmployee(t *testing.T) {
 		{
 			desc: "[ERROR]_because_invalid_date",
 			input: args{
-				requestParams: request.UpdateEmployeeRequestParams{
-					XID: mockUUID,
-				},
-				requestBody: request.UpdateEmployeeRequestBody{
+				requestBody: request.CreateEmployeeRequestBody{
+					Name:     "Ifo",
+					Email:    "Ifo@gmail.com",
 					Address:  &mockAddress,
 					Age:      &mockAge,
 					Birthday: &mockBirthdayInvalidString,
@@ -127,53 +124,11 @@ func TestEmployeeController_UpdateEmployee(t *testing.T) {
 			isError: true,
 		},
 		{
-			desc: "[ERROR]_because_validation_error_params",
-			input: args{
-				requestParams: request.UpdateEmployeeRequestParams{
-					XID: mockUUIDV1,
-				},
-				requestBody: request.UpdateEmployeeRequestBody{
-					Address:  &mockAddress,
-					Age:      &mockAge,
-					Birthday: &mockBirthdayString,
-				},
-			},
-			output: result{
-				responseStatusCode: fiber.StatusBadRequest,
-			},
-			before: func() {
-				{
-					var (
-						arg1 *pkg_types.QuerySQL = &pkg_types.QuerySQL{
-							Selects: []pkg_types.SelectQuerySQLOperation{
-								{Field: "id"},
-							},
-							Searches: [][]pkg_types.SearchQuerySQLOperation{
-								{
-									{Field: "xid", Operator: "=", Value: mockUserXID},
-								},
-							},
-						}
-					)
-					var (
-						result *sql.User = &sql.User{
-							ID: 1,
-						}
-						err error = nil
-					)
-					mockUserResource.EXPECT().FirstUser(arg1).Return(result, err).Once()
-				}
-			},
-			after:   func() {},
-			isError: true,
-		},
-		{
 			desc: "[ERROR]_because_unexpected_error_from_service",
 			input: args{
-				requestParams: request.UpdateEmployeeRequestParams{
-					XID: mockUUID,
-				},
-				requestBody: request.UpdateEmployeeRequestBody{
+				requestBody: request.CreateEmployeeRequestBody{
+					Name:     "Ifo",
+					Email:    "Ifo@gmail.com",
 					Address:  &mockAddress,
 					Age:      &mockAge,
 					Birthday: &mockBirthdayString,
@@ -206,8 +161,9 @@ func TestEmployeeController_UpdateEmployee(t *testing.T) {
 				}
 				{
 					var (
-						arg1 *input.UpdateEmployeeDTO = &input.UpdateEmployeeDTO{
-							XID:      mockUUID,
+						arg1 *input.CreateEmployeeDTO = &input.CreateEmployeeDTO{
+							Name:     "Ifo",
+							Email:    "Ifo@gmail.com",
 							Address:  &mockAddress,
 							Age:      &mockAge,
 							Birthday: &mockBirthdayTime,
@@ -217,27 +173,26 @@ func TestEmployeeController_UpdateEmployee(t *testing.T) {
 					var (
 						err error = errors.New("unexpected errors")
 					)
-					mockEmployeeService.EXPECT().UpdateEmployee(arg1).Return(err).Once()
+					mockEmployeeService.EXPECT().CreateEmployee(arg1).Return(err).Once()
 				}
 			},
 			after:   func() {},
 			isError: true,
 		},
 		{
-			desc: "[SUCCESS]_success_update_employee",
+			desc: "[SUCCESS]_success_create_user",
 			input: args{
-				requestParams: request.UpdateEmployeeRequestParams{
-					XID: mockUUID,
-				},
-				requestBody: request.UpdateEmployeeRequestBody{
+				requestBody: request.CreateEmployeeRequestBody{
+					Name:     "Ifo",
+					Email:    "Ifo@gmail.com",
 					Address:  &mockAddress,
 					Age:      &mockAge,
 					Birthday: &mockBirthdayString,
 				},
 			},
 			output: result{
-				responseStatusCode: fiber.StatusOK,
-				responseBody:       pkg_util_response.ResponseSuccess[any]("update employee success", nil, nil),
+				responseStatusCode: fiber.StatusCreated,
+				responseBody:       pkg_util_response.ResponseSuccess[any]("create employee success", nil, nil),
 			},
 			before: func() {
 				{
@@ -263,8 +218,9 @@ func TestEmployeeController_UpdateEmployee(t *testing.T) {
 				}
 				{
 					var (
-						arg1 *input.UpdateEmployeeDTO = &input.UpdateEmployeeDTO{
-							XID:      mockUUID,
+						arg1 *input.CreateEmployeeDTO = &input.CreateEmployeeDTO{
+							Name:     "Ifo",
+							Email:    "Ifo@gmail.com",
 							Address:  &mockAddress,
 							Age:      &mockAge,
 							Birthday: &mockBirthdayTime,
@@ -274,7 +230,7 @@ func TestEmployeeController_UpdateEmployee(t *testing.T) {
 					var (
 						err error = nil
 					)
-					mockEmployeeService.EXPECT().UpdateEmployee(arg1).Return(err).Once()
+					mockEmployeeService.EXPECT().CreateEmployee(arg1).Return(err).Once()
 				}
 			},
 			after:   func() {},
@@ -287,12 +243,12 @@ func TestEmployeeController_UpdateEmployee(t *testing.T) {
 
 			tC.before()
 
-			url := fmt.Sprintf("/employees/%s/update", tC.input.requestParams.XID)
+			url := "/employees/create"
 
 			strRequestBodyBytes, _ := json.Marshal(tC.input.requestBody)
 			strResponseBodyBytes, _ := json.Marshal(tC.output.responseBody)
 
-			req := httptest.NewRequest(fiber.MethodPatch, url, strings.NewReader(string(strRequestBodyBytes)))
+			req := httptest.NewRequest(fiber.MethodPost, url, strings.NewReader(string(strRequestBodyBytes)))
 			req.Header.Set(fiber.HeaderContentType, fiber.MIMEApplicationJSON)
 			req.Header.Set(fiber.HeaderAuthorization, fmt.Sprintf("Bearer %s", mockJWTTokenNoExpire))
 			resp, _ := mockApp.Test(req)

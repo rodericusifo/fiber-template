@@ -1,4 +1,4 @@
-package controller
+package handler
 
 import (
 	"encoding/json"
@@ -12,8 +12,10 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/rodericusifo/fiber-template/internal/app/core/employee/controller/request"
+	"github.com/rodericusifo/fiber-template/internal/app/core/employee/controller/api/request"
+	"github.com/rodericusifo/fiber-template/internal/app/core/employee/controller/api/response"
 	"github.com/rodericusifo/fiber-template/internal/app/core/employee/service/dto/input"
+	"github.com/rodericusifo/fiber-template/internal/app/core/employee/service/dto/output"
 	"github.com/rodericusifo/fiber-template/internal/app/model/database/sql"
 
 	pkg_types "github.com/rodericusifo/fiber-template/pkg/types"
@@ -21,13 +23,13 @@ import (
 )
 
 func init() {
-	SetupTestEmployeeController()
+	SetupTestEmployeeHandler()
 }
 
-func TestEmployeeController_CreateEmployee(t *testing.T) {
+func TestEmployeeHandler_GetEmployee(t *testing.T) {
 	type (
 		args struct {
-			requestBody request.CreateEmployeeRequestBody
+			requestParams request.GetEmployeeRequestParams
 		}
 		result struct {
 			responseStatusCode int
@@ -46,12 +48,8 @@ func TestEmployeeController_CreateEmployee(t *testing.T) {
 		{
 			desc: "[ERROR]_because_validation_error",
 			input: args{
-				requestBody: request.CreateEmployeeRequestBody{
-					Name:     "Ifo",
-					Email:    "",
-					Address:  &mockAddress,
-					Age:      &mockAge,
-					Birthday: &mockBirthdayString,
+				requestParams: request.GetEmployeeRequestParams{
+					XID: mockUUIDV1,
 				},
 			},
 			output: result{
@@ -84,54 +82,10 @@ func TestEmployeeController_CreateEmployee(t *testing.T) {
 			isError: true,
 		},
 		{
-			desc: "[ERROR]_because_invalid_date",
-			input: args{
-				requestBody: request.CreateEmployeeRequestBody{
-					Name:     "Ifo",
-					Email:    "Ifo@gmail.com",
-					Address:  &mockAddress,
-					Age:      &mockAge,
-					Birthday: &mockBirthdayInvalidString,
-				},
-			},
-			output: result{
-				responseStatusCode: fiber.StatusInternalServerError,
-			},
-			before: func() {
-				{
-					var (
-						arg1 *pkg_types.QuerySQL = &pkg_types.QuerySQL{
-							Selects: []pkg_types.SelectQuerySQLOperation{
-								{Field: "id"},
-							},
-							Searches: [][]pkg_types.SearchQuerySQLOperation{
-								{
-									{Field: "xid", Operator: "=", Value: mockUserXID},
-								},
-							},
-						}
-					)
-					var (
-						result *sql.User = &sql.User{
-							ID: 1,
-						}
-						err error = nil
-					)
-					mockUserResource.EXPECT().FirstUser(arg1).Return(result, err).Once()
-				}
-			},
-			after:   func() {},
-			isError: true,
-		},
-		{
 			desc: "[ERROR]_because_unexpected_error_from_service",
 			input: args{
-				requestBody: request.CreateEmployeeRequestBody{
-					Name:     "Ifo",
-					Email:    "Ifo@gmail.com",
-					Address:  &mockAddress,
-					Age:      &mockAge,
-					Birthday: &mockBirthdayString,
+				requestParams: request.GetEmployeeRequestParams{
+					XID: mockUUID,
 				},
 			},
 			output: result{
@@ -161,38 +115,40 @@ func TestEmployeeController_CreateEmployee(t *testing.T) {
 				}
 				{
 					var (
-						arg1 *input.CreateEmployeeDTO = &input.CreateEmployeeDTO{
-							Name:     "Ifo",
-							Email:    "Ifo@gmail.com",
-							Address:  &mockAddress,
-							Age:      &mockAge,
-							Birthday: &mockBirthdayTime,
-							UserID:   1,
+						arg1 *input.GetEmployeeDTO = &input.GetEmployeeDTO{
+							XID:    mockUUID,
+							UserID: 1,
 						}
 					)
 					var (
-						err error = errors.New("unexpected errors")
+						result output.GetEmployeeDTO = nil
+						err    error                 = errors.New("unexpected errors")
 					)
-					mockEmployeeService.EXPECT().CreateEmployee(arg1).Return(err).Once()
+					mockEmployeeService.EXPECT().GetEmployee(arg1).Return(result, err).Once()
 				}
 			},
 			after:   func() {},
 			isError: true,
 		},
 		{
-			desc: "[SUCCESS]_success_create_user",
+			desc: "[SUCCESS]_success_get_employee",
 			input: args{
-				requestBody: request.CreateEmployeeRequestBody{
-					Name:     "Ifo",
-					Email:    "Ifo@gmail.com",
-					Address:  &mockAddress,
-					Age:      &mockAge,
-					Birthday: &mockBirthdayString,
+				requestParams: request.GetEmployeeRequestParams{
+					XID: mockUUID,
 				},
 			},
 			output: result{
-				responseStatusCode: fiber.StatusCreated,
-				responseBody:       pkg_util_response.ResponseSuccess[any]("create employee success", nil, nil),
+				responseStatusCode: fiber.StatusOK,
+				responseBody: pkg_util_response.ResponseSuccess("get employee success", &response.EmployeeResponse{
+					XID:       mockUUID,
+					Name:      "John",
+					Email:     "John@gmail.com",
+					Address:   &mockAddress,
+					Age:       &mockAge,
+					Birthday:  &mockBirthdayString,
+					CreatedAt: mockDateString,
+					UpdatedAt: mockDateString,
+				}, nil),
 			},
 			before: func() {
 				{
@@ -218,19 +174,25 @@ func TestEmployeeController_CreateEmployee(t *testing.T) {
 				}
 				{
 					var (
-						arg1 *input.CreateEmployeeDTO = &input.CreateEmployeeDTO{
-							Name:     "Ifo",
-							Email:    "Ifo@gmail.com",
-							Address:  &mockAddress,
-							Age:      &mockAge,
-							Birthday: &mockBirthdayTime,
-							UserID:   1,
+						arg1 *input.GetEmployeeDTO = &input.GetEmployeeDTO{
+							XID:    mockUUID,
+							UserID: 1,
 						}
 					)
 					var (
+						result output.GetEmployeeDTO = &output.EmployeeDTO{
+							XID:       mockUUID,
+							Name:      "John",
+							Email:     "John@gmail.com",
+							Address:   &mockAddress,
+							Age:       &mockAge,
+							Birthday:  &mockBirthdayTime,
+							CreatedAt: mockDateTime,
+							UpdatedAt: mockDateTime,
+						}
 						err error = nil
 					)
-					mockEmployeeService.EXPECT().CreateEmployee(arg1).Return(err).Once()
+					mockEmployeeService.EXPECT().GetEmployee(arg1).Return(result, err).Once()
 				}
 			},
 			after:   func() {},
@@ -243,13 +205,11 @@ func TestEmployeeController_CreateEmployee(t *testing.T) {
 
 			tC.before()
 
-			url := "/employees/create"
+			url := fmt.Sprintf("/employees/%s/detail", tC.input.requestParams.XID)
 
-			strRequestBodyBytes, _ := json.Marshal(tC.input.requestBody)
 			strResponseBodyBytes, _ := json.Marshal(tC.output.responseBody)
 
-			req := httptest.NewRequest(fiber.MethodPost, url, strings.NewReader(string(strRequestBodyBytes)))
-			req.Header.Set(fiber.HeaderContentType, fiber.MIMEApplicationJSON)
+			req := httptest.NewRequest(fiber.MethodGet, url, nil)
 			req.Header.Set(fiber.HeaderAuthorization, fmt.Sprintf("Bearer %s", mockJWTTokenNoExpire))
 			resp, _ := mockApp.Test(req)
 			defer resp.Body.Close()

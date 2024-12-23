@@ -1,4 +1,4 @@
-package controller
+package handler
 
 import (
 	"github.com/gofiber/fiber/v2"
@@ -11,14 +11,14 @@ import (
 var (
 	mockApp         *fiber.App
 	mockAuthService *lib_mockery_mocks.IAuthService
-	authController  *AuthController
+	authHandler     *AuthHandler
 )
 
 var (
 	mockEmail, mockPassword, mockJWTToken string
 )
 
-func SetupTestAuthController() {
+func SetupTestAuthHandler() {
 	mockApp = fiber.New(fiber.Config{
 		ErrorHandler: handler.HandleHTTPError,
 	})
@@ -26,8 +26,8 @@ func SetupTestAuthController() {
 	mockAuthService = new(lib_mockery_mocks.IAuthService)
 
 	auth := mockApp.Group("/auth")
-	authController = InitAuthController(mockAuthService)
-	authController.Mount(auth)
+	authHandler = InitAuthHandler(mockAuthService)
+	authHandler.Mount(auth)
 
 	mockEmail = "john@gmail.com"
 	mockPassword = "john1223"

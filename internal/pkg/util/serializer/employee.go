@@ -1,7 +1,7 @@
 package serializer
 
 import (
-	"github.com/rodericusifo/fiber-template/internal/app/core/employee/controller/response"
+	"github.com/rodericusifo/fiber-template/internal/app/core/employee/controller/api/response"
 	"github.com/rodericusifo/fiber-template/internal/app/core/employee/service/dto/output"
 	"github.com/rodericusifo/fiber-template/internal/app/model/database/sql"
 	"github.com/rodericusifo/fiber-template/internal/pkg/constant"

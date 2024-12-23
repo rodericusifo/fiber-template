@@ -1,4 +1,4 @@
-package controller
+package handler
 
 import (
 	"encoding/json"
@@ -12,8 +12,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/rodericusifo/fiber-template/internal/app/core/employee/controller/request"
-	"github.com/rodericusifo/fiber-template/internal/app/core/employee/controller/response"
+	"github.com/rodericusifo/fiber-template/internal/app/core/employee/controller/api/request"
+	"github.com/rodericusifo/fiber-template/internal/app/core/employee/controller/api/response"
 	"github.com/rodericusifo/fiber-template/internal/app/core/employee/service/dto/input"
 	"github.com/rodericusifo/fiber-template/internal/app/core/employee/service/dto/output"
 	"github.com/rodericusifo/fiber-template/internal/app/model/database/sql"
@@ -25,10 +25,10 @@ import (
 )
 
 func init() {
-	SetupTestEmployeeController()
+	SetupTestEmployeeHandler()
 }
 
-func TestEmployeeController_GetEmployees(t *testing.T) {
+func TestEmployeeHandler_GetEmployees(t *testing.T) {
 	type (
 		args struct {
 			requestQuery request.GetEmployeesRequestQuery

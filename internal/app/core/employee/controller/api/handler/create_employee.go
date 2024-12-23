@@ -1,11 +1,11 @@
-package controller
+package handler
 
 import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
 
-	"github.com/rodericusifo/fiber-template/internal/app/core/employee/controller/request"
+	"github.com/rodericusifo/fiber-template/internal/app/core/employee/controller/api/request"
 	"github.com/rodericusifo/fiber-template/internal/app/core/employee/service/dto/input"
 	"github.com/rodericusifo/fiber-template/internal/pkg/constant"
 	"github.com/rodericusifo/fiber-template/internal/pkg/util/getter"
@@ -14,16 +14,11 @@ import (
 	pkg_util_response "github.com/rodericusifo/fiber-template/pkg/util/response"
 )
 
-func (c *EmployeeController) UpdateEmployee(ctx *fiber.Ctx) error {
+func (c *EmployeeHandler) CreateEmployee(ctx *fiber.Ctx) error {
 	reqUser := getter.GetRequestUser(ctx)
 
-	reqBody := new(request.UpdateEmployeeRequestBody)
+	reqBody := new(request.CreateEmployeeRequestBody)
 	if err := validator.ValidateRequestBody(ctx, reqBody); err != nil {
-		return err
-	}
-
-	reqParams := new(request.UpdateEmployeeRequestParams)
-	if err := validator.ValidateRequestParams(ctx, reqParams); err != nil {
 		return err
 	}
 
@@ -33,8 +28,9 @@ func (c *EmployeeController) UpdateEmployee(ctx *fiber.Ctx) error {
 		return err
 	}
 
-	if err := c.EmployeeService.UpdateEmployee(&input.UpdateEmployeeDTO{
-		XID:      reqParams.XID,
+	if err := c.EmployeeService.CreateEmployee(&input.CreateEmployeeDTO{
+		Name:     reqBody.Name,
+		Email:    reqBody.Email,
 		Address:  reqBody.Address,
 		Age:      reqBody.Age,
 		Birthday: &birthdayTime,
@@ -43,5 +39,5 @@ func (c *EmployeeController) UpdateEmployee(ctx *fiber.Ctx) error {
 		return err
 	}
 
-	return ctx.Status(fiber.StatusOK).JSON(pkg_util_response.ResponseSuccess[any]("update employee success", nil, nil))
+	return ctx.Status(fiber.StatusCreated).JSON(pkg_util_response.ResponseSuccess[any]("create employee success", nil, nil))
 }

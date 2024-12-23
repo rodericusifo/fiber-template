@@ -1,4 +1,4 @@
-package controller
+package handler
 
 import (
 	"encoding/json"
@@ -12,10 +12,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/rodericusifo/fiber-template/internal/app/core/employee/controller/request"
-	"github.com/rodericusifo/fiber-template/internal/app/core/employee/controller/response"
+	"github.com/rodericusifo/fiber-template/internal/app/core/employee/controller/api/request"
 	"github.com/rodericusifo/fiber-template/internal/app/core/employee/service/dto/input"
-	"github.com/rodericusifo/fiber-template/internal/app/core/employee/service/dto/output"
 	"github.com/rodericusifo/fiber-template/internal/app/model/database/sql"
 
 	pkg_types "github.com/rodericusifo/fiber-template/pkg/types"
@@ -23,13 +21,13 @@ import (
 )
 
 func init() {
-	SetupTestEmployeeController()
+	SetupTestEmployeeHandler()
 }
 
-func TestEmployeeController_GetEmployee(t *testing.T) {
+func TestEmployeeHandler_DeleteEmployee(t *testing.T) {
 	type (
 		args struct {
-			requestParams request.GetEmployeeRequestParams
+			requestParams request.DeleteEmployeeRequestParams
 		}
 		result struct {
 			responseStatusCode int
@@ -48,7 +46,7 @@ func TestEmployeeController_GetEmployee(t *testing.T) {
 		{
 			desc: "[ERROR]_because_validation_error",
 			input: args{
-				requestParams: request.GetEmployeeRequestParams{
+				requestParams: request.DeleteEmployeeRequestParams{
 					XID: mockUUIDV1,
 				},
 			},
@@ -84,7 +82,7 @@ func TestEmployeeController_GetEmployee(t *testing.T) {
 		{
 			desc: "[ERROR]_because_unexpected_error_from_service",
 			input: args{
-				requestParams: request.GetEmployeeRequestParams{
+				requestParams: request.DeleteEmployeeRequestParams{
 					XID: mockUUID,
 				},
 			},
@@ -115,40 +113,30 @@ func TestEmployeeController_GetEmployee(t *testing.T) {
 				}
 				{
 					var (
-						arg1 *input.GetEmployeeDTO = &input.GetEmployeeDTO{
+						arg1 *input.DeleteEmployeeDTO = &input.DeleteEmployeeDTO{
 							XID:    mockUUID,
 							UserID: 1,
 						}
 					)
 					var (
-						result output.GetEmployeeDTO = nil
-						err    error                 = errors.New("unexpected errors")
+						err error = errors.New("unexpected errors")
 					)
-					mockEmployeeService.EXPECT().GetEmployee(arg1).Return(result, err).Once()
+					mockEmployeeService.EXPECT().DeleteEmployee(arg1).Return(err).Once()
 				}
 			},
 			after:   func() {},
 			isError: true,
 		},
 		{
-			desc: "[SUCCESS]_success_get_employee",
+			desc: "[SUCCESS]_success_delete_employee",
 			input: args{
-				requestParams: request.GetEmployeeRequestParams{
+				requestParams: request.DeleteEmployeeRequestParams{
 					XID: mockUUID,
 				},
 			},
 			output: result{
 				responseStatusCode: fiber.StatusOK,
-				responseBody: pkg_util_response.ResponseSuccess("get employee success", &response.EmployeeResponse{
-					XID:       mockUUID,
-					Name:      "John",
-					Email:     "John@gmail.com",
-					Address:   &mockAddress,
-					Age:       &mockAge,
-					Birthday:  &mockBirthdayString,
-					CreatedAt: mockDateString,
-					UpdatedAt: mockDateString,
-				}, nil),
+				responseBody:       pkg_util_response.ResponseSuccess[any]("delete employee success", nil, nil),
 			},
 			before: func() {
 				{
@@ -174,25 +162,15 @@ func TestEmployeeController_GetEmployee(t *testing.T) {
 				}
 				{
 					var (
-						arg1 *input.GetEmployeeDTO = &input.GetEmployeeDTO{
+						arg1 *input.DeleteEmployeeDTO = &input.DeleteEmployeeDTO{
 							XID:    mockUUID,
 							UserID: 1,
 						}
 					)
 					var (
-						result output.GetEmployeeDTO = &output.EmployeeDTO{
-							XID:       mockUUID,
-							Name:      "John",
-							Email:     "John@gmail.com",
-							Address:   &mockAddress,
-							Age:       &mockAge,
-							Birthday:  &mockBirthdayTime,
-							CreatedAt: mockDateTime,
-							UpdatedAt: mockDateTime,
-						}
 						err error = nil
 					)
-					mockEmployeeService.EXPECT().GetEmployee(arg1).Return(result, err).Once()
+					mockEmployeeService.EXPECT().DeleteEmployee(arg1).Return(err).Once()
 				}
 			},
 			after:   func() {},
@@ -205,11 +183,11 @@ func TestEmployeeController_GetEmployee(t *testing.T) {
 
 			tC.before()
 
-			url := fmt.Sprintf("/employees/%s/detail", tC.input.requestParams.XID)
+			url := fmt.Sprintf("/employees/%s/delete", tC.input.requestParams.XID)
 
 			strResponseBodyBytes, _ := json.Marshal(tC.output.responseBody)
 
-			req := httptest.NewRequest(fiber.MethodGet, url, nil)
+			req := httptest.NewRequest(fiber.MethodDelete, url, nil)
 			req.Header.Set(fiber.HeaderAuthorization, fmt.Sprintf("Bearer %s", mockJWTTokenNoExpire))
 			resp, _ := mockApp.Test(req)
 			defer resp.Body.Close()
