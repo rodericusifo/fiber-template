@@ -8,12 +8,11 @@ import (
 )
 
 type IEmployeeResource interface {
-	CreateEmployee(payload *sql.Employee) error
-	UpdateEmployee(payload *sql.Employee) error
+	SaveEmployee(payload *sql.Employee) error
 	DeleteEmployee(payload *sql.Employee) error
-	GetListEmployeeAndCount(query *pkg_types.QuerySQL) ([]*sql.Employee, int, error)
-	GetEmployee(query *pkg_types.QuerySQL) (*sql.Employee, error)
-	CountAllEmployee(query *pkg_types.QuerySQL) (int, error)
+	FindEmployees(query *pkg_types.QuerySQL) ([]*sql.Employee, error)
+	FirstEmployee(query *pkg_types.QuerySQL) (*sql.Employee, error)
+	CountEmployees(query *pkg_types.QuerySQL) (int64, error)
 }
 
 type EmployeeResource struct {

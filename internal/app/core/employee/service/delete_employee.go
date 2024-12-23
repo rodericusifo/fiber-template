@@ -10,7 +10,7 @@ import (
 )
 
 func (s *EmployeeService) DeleteEmployee(payload *input.DeleteEmployeeDTO) error {
-	employeeModelRes, err := s.EmployeeResource.GetEmployee(&pkg_types.QuerySQL{
+	employeeModelRes, err := s.EmployeeResource.FirstEmployee(&pkg_types.QuerySQL{
 		Selects: []pkg_types.SelectQuerySQLOperation{
 			{Field: "id"},
 		},

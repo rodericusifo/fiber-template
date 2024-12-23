@@ -12,7 +12,7 @@ type IEmployeeService interface {
 	CreateEmployee(payload *input.CreateEmployeeDTO) error
 	UpdateEmployee(payload *input.UpdateEmployeeDTO) error
 	DeleteEmployee(payload *input.DeleteEmployeeDTO) error
-	GetListEmployee(payload *input.GetListEmployeeDTO) (output.GetListEmployeeDTO, *pkg_types.Meta, error)
+	GetEmployees(payload *input.GetEmployeesDTO) (output.GetEmployeesDTO, *pkg_types.Meta, error)
 	GetEmployee(payload *input.GetEmployeeDTO) (output.GetEmployeeDTO, error)
 }
 

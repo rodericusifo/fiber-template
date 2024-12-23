@@ -18,7 +18,7 @@ func InitEmployeeController(employeeService service.IEmployeeService) *EmployeeC
 
 func (employeeController *EmployeeController) Mount(group fiber.Router) {
 	group.Post("/create", middleware.HTTPUserRequest(), middleware.HTTPUserRolesPermission(constant.ADMIN), employeeController.CreateEmployee)
-	group.Get("/list", middleware.HTTPUserRequest(), middleware.HTTPUserRolesPermission(constant.ADMIN), employeeController.GetListEmployee)
+	group.Get("/list", middleware.HTTPUserRequest(), middleware.HTTPUserRolesPermission(constant.ADMIN), employeeController.GetEmployees)
 	group.Get("/:xid/detail", middleware.HTTPUserRequest(), middleware.HTTPUserRolesPermission(constant.ADMIN), employeeController.GetEmployee)
 	group.Patch("/:xid/update", middleware.HTTPUserRequest(), middleware.HTTPUserRolesPermission(constant.ADMIN), employeeController.UpdateEmployee)
 	group.Delete("/:xid/delete", middleware.HTTPUserRequest(), middleware.HTTPUserRolesPermission(constant.ADMIN), employeeController.DeleteEmployee)

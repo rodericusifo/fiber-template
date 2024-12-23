@@ -12,7 +12,7 @@ import (
 )
 
 func (s *AuthService) RegisterAuth(payload *input.RegisterAuthDTO) error {
-	userModelRes, err := s.UserResource.GetUser(&pkg_types.QuerySQL{
+	userModelRes, err := s.UserResource.FirstUser(&pkg_types.QuerySQL{
 		Selects: []pkg_types.SelectQuerySQLOperation{
 			{Field: "id"},
 		},
@@ -40,7 +40,7 @@ func (s *AuthService) RegisterAuth(payload *input.RegisterAuthDTO) error {
 		Password: hashedPassword,
 		Role:     payload.Role,
 	}
-	err = s.UserResource.CreateUser(userModel)
+	err = s.UserResource.SaveUser(userModel)
 	if err != nil {
 		return err
 	}

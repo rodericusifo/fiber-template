@@ -75,7 +75,7 @@ func TestEmployeeController_GetEmployee(t *testing.T) {
 						}
 						err error = nil
 					)
-					mockUserResource.On("GetUser", arg1).Return(result, err).Once()
+					mockUserResource.On("FirstUser", arg1).Return(result, err).Once()
 				}
 			},
 			after:   func() {},
@@ -111,7 +111,7 @@ func TestEmployeeController_GetEmployee(t *testing.T) {
 						}
 						err error = nil
 					)
-					mockUserResource.On("GetUser", arg1).Return(result, err).Once()
+					mockUserResource.On("FirstUser", arg1).Return(result, err).Once()
 				}
 				{
 					var (
@@ -170,7 +170,7 @@ func TestEmployeeController_GetEmployee(t *testing.T) {
 						}
 						err error = nil
 					)
-					mockUserResource.On("GetUser", arg1).Return(result, err).Once()
+					mockUserResource.On("FirstUser", arg1).Return(result, err).Once()
 				}
 				{
 					var (

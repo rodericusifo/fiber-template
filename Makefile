@@ -30,7 +30,7 @@ gen-wire:
 	wire lib/wire/core/resource/user/wire.go
 gen-mock:
 	@echo -e "$(call log_action,Generate Mock)"
-	mockery --all --output=lib/mockery/mocks 
+	mockery
 
 build: gen-wire
 	@echo -e "$(call log_action,Build Program)"

@@ -13,7 +13,7 @@ import (
 )
 
 func (s *AuthService) LoginAuth(payload *input.LoginAuthDTO) (*output.LoginAuthDTO, error) {
-	userModelRes, err := s.UserResource.GetUser(&pkg_types.QuerySQL{
+	userModelRes, err := s.UserResource.FirstUser(&pkg_types.QuerySQL{
 		Searches: [][]pkg_types.SearchQuerySQLOperation{
 			{
 				{Field: "email", Operator: "=", Value: payload.Email},

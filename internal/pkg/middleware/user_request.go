@@ -23,7 +23,7 @@ func HTTPUserRequest() fiber.Handler {
 			return fiber.NewError(fiber.StatusUnprocessableEntity, fmt.Sprintf("invalid claims type. correct type: %T", claims))
 		}
 
-		userModelRes, err := patcher.UserResource().GetUser(&pkg_types.QuerySQL{
+		userModelRes, err := patcher.UserResource().FirstUser(&pkg_types.QuerySQL{
 			Selects: []pkg_types.SelectQuerySQLOperation{
 				{Field: "id"},
 			},

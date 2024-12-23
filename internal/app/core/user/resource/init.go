@@ -8,8 +8,8 @@ import (
 )
 
 type IUserResource interface {
-	CreateUser(payload *sql.User) error
-	GetUser(query *pkg_types.QuerySQL) (*sql.User, error)
+	SaveUser(payload *sql.User) error
+	FirstUser(query *pkg_types.QuerySQL) (*sql.User, error)
 }
 
 type UserResource struct {

@@ -68,7 +68,7 @@ func TestAuthService_RegisterAuth(t *testing.T) {
 						result *sql.User = nil
 						err    error     = errors.New("error something")
 					)
-					mockUserResource.On("GetUser", arg1).Return(result, err).Once()
+					mockUserResource.On("FirstUser", arg1).Return(result, err).Once()
 				}
 			},
 			after: func() {},
@@ -106,7 +106,7 @@ func TestAuthService_RegisterAuth(t *testing.T) {
 						}
 						err error = nil
 					)
-					mockUserResource.On("GetUser", arg1).Return(result, err).Once()
+					mockUserResource.On("FirstUser", arg1).Return(result, err).Once()
 				}
 			},
 			after: func() {},
@@ -147,7 +147,7 @@ func TestAuthService_RegisterAuth(t *testing.T) {
 						result *sql.User = nil
 						err    error     = gorm.ErrRecordNotFound
 					)
-					mockUserResource.On("GetUser", arg1).Return(result, err).Once()
+					mockUserResource.On("FirstUser", arg1).Return(result, err).Once()
 				}
 			},
 			after: func() {},
@@ -188,7 +188,7 @@ func TestAuthService_RegisterAuth(t *testing.T) {
 						result *sql.User = nil
 						err    error     = gorm.ErrRecordNotFound
 					)
-					mockUserResource.On("GetUser", arg1).Return(result, err).Once()
+					mockUserResource.On("FirstUser", arg1).Return(result, err).Once()
 				}
 				{
 					var (
@@ -202,7 +202,7 @@ func TestAuthService_RegisterAuth(t *testing.T) {
 					var (
 						err error = errors.New("error something")
 					)
-					mockUserResource.On("CreateUser", arg1).Return(err).Once()
+					mockUserResource.On("SaveUser", arg1).Return(err).Once()
 				}
 			},
 			after: func() {},
@@ -243,7 +243,7 @@ func TestAuthService_RegisterAuth(t *testing.T) {
 						result *sql.User = nil
 						err    error     = gorm.ErrRecordNotFound
 					)
-					mockUserResource.On("GetUser", arg1).Return(result, err).Once()
+					mockUserResource.On("FirstUser", arg1).Return(result, err).Once()
 				}
 				{
 					var (
@@ -257,7 +257,7 @@ func TestAuthService_RegisterAuth(t *testing.T) {
 					var (
 						err error = nil
 					)
-					mockUserResource.On("CreateUser", arg1).Return(err).Once()
+					mockUserResource.On("SaveUser", arg1).Return(err).Once()
 				}
 			},
 			after: func() {},

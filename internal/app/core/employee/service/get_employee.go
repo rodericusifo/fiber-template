@@ -12,7 +12,7 @@ import (
 )
 
 func (s *EmployeeService) GetEmployee(payload *input.GetEmployeeDTO) (output.GetEmployeeDTO, error) {
-	employeeModelRes, err := s.EmployeeResource.GetEmployee(&pkg_types.QuerySQL{
+	employeeModelRes, err := s.EmployeeResource.FirstEmployee(&pkg_types.QuerySQL{
 		Searches: [][]pkg_types.SearchQuerySQLOperation{
 			{
 				{Field: "xid", Operator: "=", Value: payload.XID},

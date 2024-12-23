@@ -87,7 +87,7 @@ make stop ENV=(env)
 - Step 1: Install Mockery
 
 ```bash
-go install github.com/vektra/mockery/v2@v2.20.0
+go install github.com/vektra/mockery/v2@latest
 ```
 
 - Step 2: Run this command

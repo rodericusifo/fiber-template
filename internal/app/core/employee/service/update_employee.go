@@ -10,7 +10,7 @@ import (
 )
 
 func (s *EmployeeService) UpdateEmployee(payload *input.UpdateEmployeeDTO) error {
-	employeeModelRes, err := s.EmployeeResource.GetEmployee(&pkg_types.QuerySQL{
+	employeeModelRes, err := s.EmployeeResource.FirstEmployee(&pkg_types.QuerySQL{
 		Searches: [][]pkg_types.SearchQuerySQLOperation{
 			{
 				{Field: "xid", Operator: "=", Value: payload.XID},
@@ -31,7 +31,7 @@ func (s *EmployeeService) UpdateEmployee(payload *input.UpdateEmployeeDTO) error
 	employeeModel.Age = payload.Age
 	employeeModel.Birthday = payload.Birthday
 
-	err = s.EmployeeResource.UpdateEmployee(employeeModel)
+	err = s.EmployeeResource.SaveEmployee(employeeModel)
 	if err != nil {
 		return err
 	}

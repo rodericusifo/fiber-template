@@ -11,7 +11,7 @@ import (
 )
 
 func (s *EmployeeService) CreateEmployee(payload *input.CreateEmployeeDTO) error {
-	employeeModelRes, err := s.EmployeeResource.GetEmployee(&pkg_types.QuerySQL{
+	employeeModelRes, err := s.EmployeeResource.FirstEmployee(&pkg_types.QuerySQL{
 		Selects: []pkg_types.SelectQuerySQLOperation{
 			{Field: "id"},
 		},
@@ -37,7 +37,7 @@ func (s *EmployeeService) CreateEmployee(payload *input.CreateEmployeeDTO) error
 		Birthday: payload.Birthday,
 		UserID:   payload.UserID,
 	}
-	err = s.EmployeeResource.CreateEmployee(employeeModel)
+	err = s.EmployeeResource.SaveEmployee(employeeModel)
 	if err != nil {
 		return err
 	}

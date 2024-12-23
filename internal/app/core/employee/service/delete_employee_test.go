@@ -65,7 +65,7 @@ func TestEmployeeService_DeleteEmployee(t *testing.T) {
 						result *sql.Employee = nil
 						err    error         = gorm.ErrRecordNotFound
 					)
-					mockEmployeeResource.On("GetEmployee", arg1).Return(result, err).Once()
+					mockEmployeeResource.On("FirstEmployee", arg1).Return(result, err).Once()
 				}
 			},
 			after: func() {},
@@ -100,7 +100,7 @@ func TestEmployeeService_DeleteEmployee(t *testing.T) {
 						result *sql.Employee = nil
 						err    error         = errors.New("error something")
 					)
-					mockEmployeeResource.On("GetEmployee", arg1).Return(result, err).Once()
+					mockEmployeeResource.On("FirstEmployee", arg1).Return(result, err).Once()
 				}
 			},
 			after: func() {},
@@ -137,7 +137,7 @@ func TestEmployeeService_DeleteEmployee(t *testing.T) {
 						}
 						err error = nil
 					)
-					mockEmployeeResource.On("GetEmployee", arg1).Return(result, err).Once()
+					mockEmployeeResource.On("FirstEmployee", arg1).Return(result, err).Once()
 				}
 				{
 					var (
@@ -185,7 +185,7 @@ func TestEmployeeService_DeleteEmployee(t *testing.T) {
 						}
 						err error = nil
 					)
-					mockEmployeeResource.On("GetEmployee", arg1).Return(result, err).Once()
+					mockEmployeeResource.On("FirstEmployee", arg1).Return(result, err).Once()
 				}
 				{
 					var (
