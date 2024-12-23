@@ -101,7 +101,7 @@ func TestEmployeeResource_FindEmployees(t *testing.T) {
 						UpdatedAt: mockDateTime,
 					},
 				},
-				err:   nil,
+				err: nil,
 			},
 			before: func() {
 				{
@@ -131,7 +131,7 @@ func TestEmployeeResource_FindEmployees(t *testing.T) {
 								UpdatedAt: mockDateTime,
 							},
 						}
-						err   error = nil
+						err error = nil
 					)
 					mockEmployeeDatabaseSQLRepository.On("FindEmployees", arg1).Return(result, err).Once()
 				}

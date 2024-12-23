@@ -45,9 +45,6 @@ ARG PORT
 # Validate build arg
 RUN if [ -z "$ENV" ] || [ -z "$PORT" ]; then echo "ERROR: ENV and PORT must be provided. Use --build-arg ENV=dev --build-arg PORT=8080"; exit 1; fi
 
-# Set build env
-ENV ENV=${ENV}
-
 # Setup working directory
 WORKDIR /app
 

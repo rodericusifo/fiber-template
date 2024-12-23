@@ -267,7 +267,7 @@ func TestMysqlEmployeeDatabaseSQLRepository_FindEmployees(t *testing.T) {
 						},
 					},
 				},
-				err:   nil,
+				err: nil,
 			},
 			before: func() {
 				{

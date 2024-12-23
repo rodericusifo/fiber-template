@@ -2,6 +2,9 @@ package main
 
 import (
 	"fmt"
+	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -51,18 +54,39 @@ func main() {
 
 	core.InitRoutes(app)
 
-	err := app.Listen(fmt.Sprintf(":%d", func() int {
-		serverPort := getter.GetEnvConfig().ServerPort
-		if serverPort != 0 {
-			return serverPort
-		} else {
-			return constant.DEFAULT_ENV_SERVER_PORT.(int)
+	go func() {
+		err := app.Listen(fmt.Sprintf(":%d", func() int {
+			serverPort := getter.GetEnvConfig().ServerPort
+			if serverPort != 0 {
+				return serverPort
+			} else {
+				return constant.DEFAULT_ENV_SERVER_PORT.(int)
+			}
+		}()))
+		if err != nil {
+			log.WithFields(log.Fields{
+				"message": "error starting server",
+				"detail":  err,
+			}).Fatal("[MAIN]")
 		}
-	}()))
-	if err != nil {
+	}()
+
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
+
+	<-quit
+	log.WithFields(log.Fields{
+		"message": "shutting down server...",
+	}).Infoln("[MAIN]")
+
+	if err := app.Shutdown(); err != nil {
 		log.WithFields(log.Fields{
-			"message": "application failed to run",
+			"message": "server forced to shutdown",
 			"detail":  err,
 		}).Fatal("[MAIN]")
 	}
+
+	log.WithFields(log.Fields{
+		"message": "server shutdown gracefully",
+	}).Infoln("[MAIN]")
 }

@@ -8,8 +8,9 @@ services:
       target: build-release-stage
       args:
         ENV:
-    environment:
-      - ENV=${ENV}
+        PORT: ${SERVER_PORT:-8080}
+    expose:
+      - ${SERVER_PORT:-8080}
     command: ["sh", "-c", "/dist/main -env \"$ENV\""]
     ports:
       - 8081:${SERVER_PORT:-8080}

@@ -121,8 +121,8 @@ func TestEmployeeController_GetEmployees(t *testing.T) {
 					)
 					var (
 						result output.GetEmployeesDTO = nil
-						meta   *pkg_types.Meta           = nil
-						err    error                     = errors.New("unexpected errors")
+						meta   *pkg_types.Meta        = nil
+						err    error                  = errors.New("unexpected errors")
 					)
 					mockEmployeeService.On("GetEmployees", arg1).Return(result, meta, err).Once()
 				}
