@@ -67,7 +67,7 @@ func TestAuthService_LoginAuth(t *testing.T) {
 						result *sql.User = nil
 						err    error     = gorm.ErrRecordNotFound
 					)
-					mockUserResource.On("FirstUser", arg1).Return(result, err).Once()
+					mockUserResource.EXPECT().FirstUser(arg1).Return(result, err).Once()
 				}
 			},
 			after: func() {},
@@ -99,7 +99,7 @@ func TestAuthService_LoginAuth(t *testing.T) {
 						result *sql.User = nil
 						err    error     = errors.New("error something")
 					)
-					mockUserResource.On("FirstUser", arg1).Return(result, err).Once()
+					mockUserResource.EXPECT().FirstUser(arg1).Return(result, err).Once()
 				}
 			},
 			after: func() {},
@@ -140,7 +140,7 @@ func TestAuthService_LoginAuth(t *testing.T) {
 						}
 						err error = nil
 					)
-					mockUserResource.On("FirstUser", arg1).Return(result, err).Once()
+					mockUserResource.EXPECT().FirstUser(arg1).Return(result, err).Once()
 				}
 			},
 			after: func() {},
@@ -186,7 +186,7 @@ func TestAuthService_LoginAuth(t *testing.T) {
 						}
 						err error = nil
 					)
-					mockUserResource.On("FirstUser", arg1).Return(result, err).Once()
+					mockUserResource.EXPECT().FirstUser(arg1).Return(result, err).Once()
 				}
 			},
 			after: func() {},
@@ -234,7 +234,7 @@ func TestAuthService_LoginAuth(t *testing.T) {
 						}
 						err error = nil
 					)
-					mockUserResource.On("FirstUser", arg1).Return(result, err).Once()
+					mockUserResource.EXPECT().FirstUser(arg1).Return(result, err).Once()
 				}
 			},
 			after: func() {},

@@ -68,7 +68,7 @@ func TestEmployeeResource_FindEmployees(t *testing.T) {
 						result []*sql.Employee = nil
 						err    error           = errors.New("error something")
 					)
-					mockEmployeeDatabaseSQLRepository.On("FindEmployees", arg1).Return(result, err).Once()
+					mockEmployeeDatabaseSQLRepository.EXPECT().FindEmployees(arg1).Return(result, err).Once()
 				}
 			},
 			after: func() {},
@@ -133,7 +133,7 @@ func TestEmployeeResource_FindEmployees(t *testing.T) {
 						}
 						err error = nil
 					)
-					mockEmployeeDatabaseSQLRepository.On("FindEmployees", arg1).Return(result, err).Once()
+					mockEmployeeDatabaseSQLRepository.EXPECT().FindEmployees(arg1).Return(result, err).Once()
 				}
 			},
 			after: func() {},

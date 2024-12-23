@@ -57,7 +57,7 @@ func TestUserResource_SaveUser(t *testing.T) {
 					var (
 						err error = errors.New("error something")
 					)
-					mockUserDatabaseSQLRepository.On("SaveUser", arg1).Return(err).Once()
+					mockUserDatabaseSQLRepository.EXPECT().SaveUser(arg1).Return(err).Once()
 				}
 			},
 			after: func() {},
@@ -88,7 +88,7 @@ func TestUserResource_SaveUser(t *testing.T) {
 					var (
 						err error = nil
 					)
-					mockUserDatabaseSQLRepository.On("SaveUser", arg1).Return(err).Once()
+					mockUserDatabaseSQLRepository.EXPECT().SaveUser(arg1).Return(err).Once()
 				}
 			},
 			after: func() {},

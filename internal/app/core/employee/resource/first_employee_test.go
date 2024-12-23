@@ -67,7 +67,7 @@ func TestEmployeeResource_FirstEmployee(t *testing.T) {
 						result *sql.Employee = nil
 						err    error         = errors.New("error something")
 					)
-					mockEmployeeDatabaseSQLRepository.On("FirstEmployee", arg1).Return(result, err).Once()
+					mockEmployeeDatabaseSQLRepository.EXPECT().FirstEmployee(arg1).Return(result, err).Once()
 				}
 			},
 			after: func() {},
@@ -126,7 +126,7 @@ func TestEmployeeResource_FirstEmployee(t *testing.T) {
 						}
 						err error = nil
 					)
-					mockEmployeeDatabaseSQLRepository.On("FirstEmployee", arg1).Return(result, err).Once()
+					mockEmployeeDatabaseSQLRepository.EXPECT().FirstEmployee(arg1).Return(result, err).Once()
 				}
 			},
 			after: func() {},

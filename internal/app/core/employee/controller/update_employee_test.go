@@ -79,7 +79,7 @@ func TestEmployeeController_UpdateEmployee(t *testing.T) {
 						}
 						err error = nil
 					)
-					mockUserResource.On("FirstUser", arg1).Return(result, err).Once()
+					mockUserResource.EXPECT().FirstUser(arg1).Return(result, err).Once()
 				}
 			},
 			after:   func() {},
@@ -120,7 +120,7 @@ func TestEmployeeController_UpdateEmployee(t *testing.T) {
 						}
 						err error = nil
 					)
-					mockUserResource.On("FirstUser", arg1).Return(result, err).Once()
+					mockUserResource.EXPECT().FirstUser(arg1).Return(result, err).Once()
 				}
 			},
 			after:   func() {},
@@ -161,7 +161,7 @@ func TestEmployeeController_UpdateEmployee(t *testing.T) {
 						}
 						err error = nil
 					)
-					mockUserResource.On("FirstUser", arg1).Return(result, err).Once()
+					mockUserResource.EXPECT().FirstUser(arg1).Return(result, err).Once()
 				}
 			},
 			after:   func() {},
@@ -202,7 +202,7 @@ func TestEmployeeController_UpdateEmployee(t *testing.T) {
 						}
 						err error = nil
 					)
-					mockUserResource.On("FirstUser", arg1).Return(result, err).Once()
+					mockUserResource.EXPECT().FirstUser(arg1).Return(result, err).Once()
 				}
 				{
 					var (
@@ -217,7 +217,7 @@ func TestEmployeeController_UpdateEmployee(t *testing.T) {
 					var (
 						err error = errors.New("unexpected errors")
 					)
-					mockEmployeeService.On("UpdateEmployee", arg1).Return(err).Once()
+					mockEmployeeService.EXPECT().UpdateEmployee(arg1).Return(err).Once()
 				}
 			},
 			after:   func() {},
@@ -259,7 +259,7 @@ func TestEmployeeController_UpdateEmployee(t *testing.T) {
 						}
 						err error = nil
 					)
-					mockUserResource.On("FirstUser", arg1).Return(result, err).Once()
+					mockUserResource.EXPECT().FirstUser(arg1).Return(result, err).Once()
 				}
 				{
 					var (
@@ -274,7 +274,7 @@ func TestEmployeeController_UpdateEmployee(t *testing.T) {
 					var (
 						err error = nil
 					)
-					mockEmployeeService.On("UpdateEmployee", arg1).Return(err).Once()
+					mockEmployeeService.EXPECT().UpdateEmployee(arg1).Return(err).Once()
 				}
 			},
 			after:   func() {},

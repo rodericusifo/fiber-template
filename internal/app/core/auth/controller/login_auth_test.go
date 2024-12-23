@@ -79,7 +79,7 @@ func TestAuthController_LoginAuth(t *testing.T) {
 						result *output.LoginAuthDTO = nil
 						err    error                = errors.New("unexpected errors")
 					)
-					mockAuthService.On("LoginAuth", arg1).Return(result, err).Once()
+					mockAuthService.EXPECT().LoginAuth(arg1).Return(result, err).Once()
 				}
 			},
 			after:   func() {},
@@ -113,7 +113,7 @@ func TestAuthController_LoginAuth(t *testing.T) {
 						}
 						err error = nil
 					)
-					mockAuthService.On("LoginAuth", arg1).Return(result, err).Once()
+					mockAuthService.EXPECT().LoginAuth(arg1).Return(result, err).Once()
 				}
 			},
 			after:   func() {},

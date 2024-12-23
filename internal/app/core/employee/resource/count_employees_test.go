@@ -61,7 +61,7 @@ func TestEmployeeResource_CountEmployees(t *testing.T) {
 						result int64 = 0
 						err    error = errors.New("error something")
 					)
-					mockEmployeeDatabaseSQLRepository.On("CountEmployees", arg1).Return(result, err).Once()
+					mockEmployeeDatabaseSQLRepository.EXPECT().CountEmployees(arg1).Return(result, err).Once()
 				}
 			},
 			after: func() {},
@@ -96,7 +96,7 @@ func TestEmployeeResource_CountEmployees(t *testing.T) {
 						result int64 = 1
 						err    error = nil
 					)
-					mockEmployeeDatabaseSQLRepository.On("CountEmployees", arg1).Return(result, err).Once()
+					mockEmployeeDatabaseSQLRepository.EXPECT().CountEmployees(arg1).Return(result, err).Once()
 				}
 			},
 			after: func() {},

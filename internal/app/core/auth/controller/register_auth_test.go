@@ -83,7 +83,7 @@ func TestAuthController_RegisterAuth(t *testing.T) {
 					var (
 						err error = errors.New("unexpected errors")
 					)
-					mockAuthService.On("RegisterAuth", arg1).Return(err).Once()
+					mockAuthService.EXPECT().RegisterAuth(arg1).Return(err).Once()
 				}
 			},
 			after:   func() {},
@@ -116,7 +116,7 @@ func TestAuthController_RegisterAuth(t *testing.T) {
 					var (
 						err error = nil
 					)
-					mockAuthService.On("RegisterAuth", arg1).Return(err).Once()
+					mockAuthService.EXPECT().RegisterAuth(arg1).Return(err).Once()
 				}
 			},
 			after:   func() {},

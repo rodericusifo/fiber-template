@@ -52,7 +52,7 @@ func TestUserResource_FirstUser(t *testing.T) {
 						result *sql.User = nil
 						err    error     = errors.New("error something")
 					)
-					mockUserDatabaseSQLRepository.On("FirstUser", arg1).Return(result, err).Once()
+					mockUserDatabaseSQLRepository.EXPECT().FirstUser(arg1).Return(result, err).Once()
 				}
 			},
 			after: func() {},
@@ -93,7 +93,7 @@ func TestUserResource_FirstUser(t *testing.T) {
 						}
 						err error = nil
 					)
-					mockUserDatabaseSQLRepository.On("FirstUser", arg1).Return(result, err).Once()
+					mockUserDatabaseSQLRepository.EXPECT().FirstUser(arg1).Return(result, err).Once()
 				}
 			},
 			after: func() {},

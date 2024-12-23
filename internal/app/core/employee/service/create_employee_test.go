@@ -66,7 +66,7 @@ func TestEmployeeService_CreateEmployee(t *testing.T) {
 						result *sql.Employee = nil
 						err    error         = errors.New("error something")
 					)
-					mockEmployeeResource.On("FirstEmployee", arg1).Return(result, err).Once()
+					mockEmployeeResource.EXPECT().FirstEmployee(arg1).Return(result, err).Once()
 				}
 			},
 			after: func() {},
@@ -104,7 +104,7 @@ func TestEmployeeService_CreateEmployee(t *testing.T) {
 						}
 						err error = nil
 					)
-					mockEmployeeResource.On("FirstEmployee", arg1).Return(result, err).Once()
+					mockEmployeeResource.EXPECT().FirstEmployee(arg1).Return(result, err).Once()
 				}
 			},
 			after: func() {},
@@ -140,7 +140,7 @@ func TestEmployeeService_CreateEmployee(t *testing.T) {
 						result *sql.Employee = nil
 						err    error         = gorm.ErrRecordNotFound
 					)
-					mockEmployeeResource.On("FirstEmployee", arg1).Return(result, err).Once()
+					mockEmployeeResource.EXPECT().FirstEmployee(arg1).Return(result, err).Once()
 				}
 				{
 					var (
@@ -153,7 +153,7 @@ func TestEmployeeService_CreateEmployee(t *testing.T) {
 					var (
 						err error = errors.New("error something")
 					)
-					mockEmployeeResource.On("SaveEmployee", arg1).Return(err).Once()
+					mockEmployeeResource.EXPECT().SaveEmployee(arg1).Return(err).Once()
 				}
 			},
 			after: func() {},
@@ -189,7 +189,7 @@ func TestEmployeeService_CreateEmployee(t *testing.T) {
 						result *sql.Employee = nil
 						err    error         = gorm.ErrRecordNotFound
 					)
-					mockEmployeeResource.On("FirstEmployee", arg1).Return(result, err).Once()
+					mockEmployeeResource.EXPECT().FirstEmployee(arg1).Return(result, err).Once()
 				}
 				{
 					var (
@@ -202,7 +202,7 @@ func TestEmployeeService_CreateEmployee(t *testing.T) {
 					var (
 						err error = nil
 					)
-					mockEmployeeResource.On("SaveEmployee", arg1).Return(err).Once()
+					mockEmployeeResource.EXPECT().SaveEmployee(arg1).Return(err).Once()
 				}
 			},
 			after: func() {},

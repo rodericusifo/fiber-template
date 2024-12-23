@@ -73,7 +73,7 @@ func TestEmployeeService_GetEmployees(t *testing.T) {
 						result []*sql.Employee = nil
 						err    error           = errors.New("error something")
 					)
-					mockEmployeeResource.On("FindEmployees", arg1).Return(result, err).Once()
+					mockEmployeeResource.EXPECT().FindEmployees(arg1).Return(result, err).Once()
 				}
 			},
 			after: func() {},
@@ -112,7 +112,7 @@ func TestEmployeeService_GetEmployees(t *testing.T) {
 						result []*sql.Employee = []*sql.Employee{}
 						err    error           = nil
 					)
-					mockEmployeeResource.On("FindEmployees", arg1).Return(result, err).Once()
+					mockEmployeeResource.EXPECT().FindEmployees(arg1).Return(result, err).Once()
 				}
 			},
 			after: func() {},
@@ -163,7 +163,7 @@ func TestEmployeeService_GetEmployees(t *testing.T) {
 						}
 						err error = nil
 					)
-					mockEmployeeResource.On("FindEmployees", arg1).Return(result, err).Once()
+					mockEmployeeResource.EXPECT().FindEmployees(arg1).Return(result, err).Once()
 				}
 				{
 					var (
@@ -180,7 +180,7 @@ func TestEmployeeService_GetEmployees(t *testing.T) {
 						count int64 = 0
 						err   error = errors.New("error count all employee")
 					)
-					mockEmployeeResource.On("CountEmployees", arg1).Return(count, err).Once()
+					mockEmployeeResource.EXPECT().CountEmployees(arg1).Return(count, err).Once()
 				}
 			},
 			after: func() {},
@@ -247,7 +247,7 @@ func TestEmployeeService_GetEmployees(t *testing.T) {
 						}
 						err error = nil
 					)
-					mockEmployeeResource.On("FindEmployees", arg1).Return(result, err).Once()
+					mockEmployeeResource.EXPECT().FindEmployees(arg1).Return(result, err).Once()
 				}
 				{
 					var (
@@ -264,7 +264,7 @@ func TestEmployeeService_GetEmployees(t *testing.T) {
 						count int64 = 1
 						err   error = nil
 					)
-					mockEmployeeResource.On("CountEmployees", arg1).Return(count, err).Once()
+					mockEmployeeResource.EXPECT().CountEmployees(arg1).Return(count, err).Once()
 				}
 			},
 			after: func() {},

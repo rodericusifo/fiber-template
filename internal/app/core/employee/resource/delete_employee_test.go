@@ -50,7 +50,7 @@ func TestEmployeeResource_DeleteEmployee(t *testing.T) {
 					var (
 						err error = errors.New("error something")
 					)
-					mockEmployeeDatabaseSQLRepository.On("DeleteEmployee", arg1).Return(err).Once()
+					mockEmployeeDatabaseSQLRepository.EXPECT().DeleteEmployee(arg1).Return(err).Once()
 				}
 			},
 			after: func() {},
@@ -75,7 +75,7 @@ func TestEmployeeResource_DeleteEmployee(t *testing.T) {
 					var (
 						err error = nil
 					)
-					mockEmployeeDatabaseSQLRepository.On("DeleteEmployee", arg1).Return(err).Once()
+					mockEmployeeDatabaseSQLRepository.EXPECT().DeleteEmployee(arg1).Return(err).Once()
 				}
 			},
 			after: func() {},

@@ -60,7 +60,7 @@ func TestEmployeeResource_SaveEmployee(t *testing.T) {
 					var (
 						err error = errors.New("error something")
 					)
-					mockEmployeeDatabaseSQLRepository.On("SaveEmployee", arg1).Return(err).Once()
+					mockEmployeeDatabaseSQLRepository.EXPECT().SaveEmployee(arg1).Return(err).Once()
 				}
 			},
 			after: func() {},
@@ -95,7 +95,7 @@ func TestEmployeeResource_SaveEmployee(t *testing.T) {
 					var (
 						err error = nil
 					)
-					mockEmployeeDatabaseSQLRepository.On("SaveEmployee", arg1).Return(err).Once()
+					mockEmployeeDatabaseSQLRepository.EXPECT().SaveEmployee(arg1).Return(err).Once()
 				}
 			},
 			after: func() {},
@@ -138,7 +138,7 @@ func TestEmployeeResource_SaveEmployee(t *testing.T) {
 					var (
 						err error = errors.New("error something")
 					)
-					mockEmployeeDatabaseSQLRepository.On("SaveEmployee", arg1).Return(err).Once()
+					mockEmployeeDatabaseSQLRepository.EXPECT().SaveEmployee(arg1).Return(err).Once()
 				}
 			},
 			after: func() {},
@@ -181,7 +181,7 @@ func TestEmployeeResource_SaveEmployee(t *testing.T) {
 					var (
 						err error = nil
 					)
-					mockEmployeeDatabaseSQLRepository.On("SaveEmployee", arg1).Return(err).Once()
+					mockEmployeeDatabaseSQLRepository.EXPECT().SaveEmployee(arg1).Return(err).Once()
 				}
 			},
 			after: func() {},

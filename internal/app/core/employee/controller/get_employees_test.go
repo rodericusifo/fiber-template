@@ -77,7 +77,7 @@ func TestEmployeeController_GetEmployees(t *testing.T) {
 						}
 						err error = nil
 					)
-					mockUserResource.On("FirstUser", arg1).Return(result, err).Once()
+					mockUserResource.EXPECT().FirstUser(arg1).Return(result, err).Once()
 				}
 			},
 			after:   func() {},
@@ -111,7 +111,7 @@ func TestEmployeeController_GetEmployees(t *testing.T) {
 						}
 						err error = nil
 					)
-					mockUserResource.On("FirstUser", arg1).Return(result, err).Once()
+					mockUserResource.EXPECT().FirstUser(arg1).Return(result, err).Once()
 				}
 				{
 					var (
@@ -124,7 +124,7 @@ func TestEmployeeController_GetEmployees(t *testing.T) {
 						meta   *pkg_types.Meta        = nil
 						err    error                  = errors.New("unexpected errors")
 					)
-					mockEmployeeService.On("GetEmployees", arg1).Return(result, meta, err).Once()
+					mockEmployeeService.EXPECT().GetEmployees(arg1).Return(result, meta, err).Once()
 				}
 			},
 			after:   func() {},
@@ -175,7 +175,7 @@ func TestEmployeeController_GetEmployees(t *testing.T) {
 						}
 						err error = nil
 					)
-					mockUserResource.On("FirstUser", arg1).Return(result, err).Once()
+					mockUserResource.EXPECT().FirstUser(arg1).Return(result, err).Once()
 				}
 				{
 					var (
@@ -204,7 +204,7 @@ func TestEmployeeController_GetEmployees(t *testing.T) {
 						}
 						err error = nil
 					)
-					mockEmployeeService.On("GetEmployees", arg1).Return(result, meta, err).Once()
+					mockEmployeeService.EXPECT().GetEmployees(arg1).Return(result, meta, err).Once()
 				}
 			},
 			after:   func() {},
