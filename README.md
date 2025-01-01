@@ -1,8 +1,8 @@
-# FIBER TEMPLATE
+# 📖 About
 
-Application which can ...
+**Fiber Template** is an application which can ...
 
-## INSTALLATION
+## 📝 Installation
 
 - Step 1: Install Make.
 
@@ -62,7 +62,7 @@ DATABASE_CACHE_REDIS_DATABASE=0
 ...
 ```
 
-## RUN APPLICATION
+## 🚀 Launch Your App
 
 Run this command to start
 
@@ -76,13 +76,13 @@ Run this command to stop
 make stop ENV=(env)
 ```
 
-## DOCUMENTATION
+## 📚 Documentation
 
 - Postman
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://www.postman.com/rodericusifo/workspace/my-public-workspace/collection/10344918-27d85a45-7c41-4b84-9a31-9af5ab1e7a87?action=share&creator=10344918)
 
-## TEST COVERAGE
+## 🧪 Test Coverage
 
 - Step 1: Install Golang. Docs [Link](https://go.dev/doc/install)
 

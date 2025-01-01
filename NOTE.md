@@ -1,6 +1,6 @@
-# FIBER TEMPLATE'S NOTE
+# APP'S NOTE
 
-Note for Fiber Template
+Note for APP
 
 ## GORM NOTES
 

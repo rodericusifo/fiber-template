@@ -19,12 +19,11 @@ define check_env
 		exit 1; \
 	fi
 endef
-define set_env
-	@export ENV=$(ENV)
-endef
 
 # ENV VARIABLE
 ENV ?=
+APPS_NAME = $(shell grep -E '^APPS_NAME=' env/$(ENV).application.env | cut -d '=' -f 2)
+APPS_SLUG = $(shell echo "$(APPS_NAME)" | tr '[:upper:]' '[:lower:]' | tr ' ' '_' | tr -d '"')
 
 gen-wire:
 	@echo -e "$(call log_action,Generate Wire)"
@@ -48,16 +47,14 @@ test-cover: gen-mock
 
 start:
 	$(call check_env,start)
-	$(call set_env)
 	@echo -e "$(call log_action,Start Program ($(ENV)))"
-	docker volume ls | grep mysql_fiber_data_$(ENV) || docker volume create --name mysql_fiber_data_$(ENV)
-	# docker volume ls | grep postgres_fiber_data_$(ENV) || docker volume create --name postgres_fiber_data_$(ENV)
-	docker volume ls | grep redis_fiber_data_$(ENV) || docker volume create --name redis_fiber_data_$(ENV)
-	docker network ls | grep fiber_backend_$(ENV) || docker network create fiber_backend_$(ENV)
-	docker compose --env-file env/$(ENV).application.env up --build -d
+	docker volume ls | grep mysql_$(APPS_SLUG)_data_$(ENV) || docker volume create --name mysql_$(APPS_SLUG)_data_$(ENV)
+	# docker volume ls | grep postgres_$(APPS_SLUG)_data_$(ENV) || docker volume create --name postgres_$(APPS_SLUG)_data_$(ENV)
+	docker volume ls | grep redis_$(APPS_SLUG)_data_$(ENV) || docker volume create --name redis_$(APPS_SLUG)_data_$(ENV)
+	docker network ls | grep $(APPS_SLUG)_backend_$(ENV) || docker network create $(APPS_SLUG)_backend_$(ENV) 
+	ENV=$(ENV) APPS_SLUG=$(APPS_SLUG) docker compose --env-file env/$(ENV).application.env up --build -d
 
 stop:
 	$(call check_env,stop)
-	$(call set_env)
 	@echo -e "$(call log_action,Stop Program ($(ENV)))"
-	docker compose --env-file env/$(ENV).application.env down
+	ENV=$(ENV) APPS_SLUG=$(APPS_SLUG) docker compose --env-file env/$(ENV).application.env down
